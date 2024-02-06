@@ -1,0 +1,22 @@
+{
+    "name": "YauS",
+    "version": "0.0.1",
+    "description": "YauS is an universal Scheduler",
+    "keywords": "Scheduler",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/remyar/_YauS_"
+    },
+    "authors": [
+        {
+            "name": "ARNAUDIN Rémy",
+            "url": "https://github.com/remyar/_YauS_/issues/new"
+        }
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/remyar/_YauS_",
+    "dependencies": {
+    },
+    "frameworks": "*",
+    "platforms": "*"
+}
