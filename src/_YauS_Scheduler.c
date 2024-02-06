@@ -21,7 +21,7 @@
 /** INCLUDES *******************************************************/
 #include "./_YauS_.h"
 #include "./_YauS_Tick.h"
-
+#include "./_YauS_Type.h"
 //#include "arch.h"
 
 /** CONSTANTS ******************************************************/
@@ -31,9 +31,8 @@
 /** VARIABLES ******************************************************/
 PTR_TASK_RUN_FUNC funcIdleHook = NULL;
 s_TASK tasks[YAUS_MAX_TASKS];
-#ifdef YAUS_USE_ARDUINO_MILLIS
-static UINT32 _tick = 0;
-#endif
+//static uint32_t _tick = 0;
+
 /** DECLARATIONS ***************************************************/
 
 void YAUS_TaskForce(uint32_t handle)
@@ -112,7 +111,7 @@ void YAUS_HookTick(void *hookFunc)
         funcIdleHook = (PTR_TASK_RUN_FUNC)hookFunc;
 }
 
-void YAUS_Init()
+void YAUS_Init(void)
 {
     uint8_t i;
 
@@ -124,11 +123,7 @@ void YAUS_Init()
 
     YAUS_msgInit();
 
-    TICK_Init();
-
-#ifdef YAUS_USE_ARDUINO_MILLIS
-    _tick = HAL_TickCount();
-#endif
+    YAUS_TickInit();
 
 #ifdef YAUS_USE_MODULE_DRIVERS
     //-- Modules
@@ -168,14 +163,12 @@ void YAUS_Run(bool blocking)
 
     do
     {
-#ifdef YAUS_USE_ARDUINO_MILLIS
-        if (HAL_nbTickSince(_tick) >= 1)
+        /*
+        if (YAUS_TickNbCountSince(_tick) >= 1)
         {
+            _tick = YAUS_TickCount();
             YAUS_Update();
-
-            _tick = HAL_TickCount();
-        }
-#endif
+        }*/
 
         //-- Mise a jours des taches ayant besoin d'etre initialis� */
         if ((tasks[i].init != NULL) && (tasks[i].status == INIT_STATUS))
@@ -199,16 +192,16 @@ void YAUS_Run(bool blocking)
             //--- Les taches pretes avec un timer a 0 deviennent actives
             if ((tasks[i].status == READY_STATUS) && (tasks[i].counter == 0))
             {
-                tick = TICK_Count();
+                tick = YAUS_TickCount();
                 tasks[i].status = RUNNING_STATUS;
                 tasks[i].run();
                 tasks[i].status = END_RUN_STATUS;
 
-                tasks[i].taskUseTick += TICK_nbCountSince(tick);
-                if (TICK_nbCountSince(tick) < tasks[i].taskUseTickMin)
-                    tasks[i].taskUseTickMin = TICK_nbCountSince(tick);
-                if (TICK_nbCountSince(tick) > tasks[i].taskUseTickMax)
-                    tasks[i].taskUseTickMax = TICK_nbCountSince(tick);
+                tasks[i].taskUseTick += YAUS_TickNbCountSince(tick);
+                if (YAUS_TickNbCountSince(tick) < tasks[i].taskUseTickMin)
+                    tasks[i].taskUseTickMin = YAUS_TickNbCountSince(tick);
+                if (YAUS_TickNbCountSince(tick) > tasks[i].taskUseTickMax)
+                    tasks[i].taskUseTickMax = YAUS_TickNbCountSince(tick);
             }
         }
         i++;

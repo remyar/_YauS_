@@ -31,26 +31,34 @@
 		(R) = (C) + 0xFFFFFFFF + 1 - (L)
 
 /** VARIABLES ******************************************************/
-static uint32_t _tick;
 
 /** DECLARATIONS ***************************************************/
-
-void TICK_Init(void)
+__attribute__((weak)) void LLD_TickInit(void)
 {
 
 }
 
-uint32_t TICK_Count(void)
+__attribute__((weak)) uint32_t LLD_GetTick(void)
 {
-	return HAL_GetTick();
+
 }
 
-uint32_t TICK_nbCountSince(uint32_t lastCount)
+void YAUS_TickInit(void)
+{
+	LLD_TickInit();
+}
+
+uint32_t YAUS_TickCount(void)
+{
+	return LLD_GetTick();
+}
+
+uint32_t YAUS_TickNbCountSince(uint32_t lastCount)
 {
 	uint64_t res;
 	uint32_t newCount;
 
-	newCount = HAL_GetTick();
+	newCount = YAUS_TickCount();
 
 	DIFF_COUNT(res, newCount, lastCount);
 
@@ -60,9 +68,8 @@ uint32_t TICK_nbCountSince(uint32_t lastCount)
 //=============================================================================
 //--- INTERRUPTIONS
 //=============================================================================
-void TICK_HandleIT(void)
+void YAUS_HandleIT(void)
 {
-
 	YAUS_Update(); //-- mise a jours des taches
 
 	if (funcIdleHook != NULL)

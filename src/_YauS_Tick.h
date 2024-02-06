@@ -32,9 +32,12 @@
 extern PTR_TASK_RUN_FUNC funcIdleHook;
 
 /** DECLARATIONS ***************************************************/
-void TICK_Init(void);
-uint32_t TICK_Count(void);
-uint32_t TICK_nbCountSince(uint32_t lastCount);
-void TICK_HandleIT(void);
+__attribute__((weak)) void LLD_TickInit(void);
+__attribute__((weak)) uint32_t LLD_GetTick(void) ;
+
+void YAUS_TickInit(void);
+uint32_t YAUS_TickCount(void);
+uint32_t YAUS_TickNbCountSince(uint32_t lastCount);
+void YAUS_HandleIT(void);
 
 #endif /* _LLD_TICK_H_INCLUDED */
