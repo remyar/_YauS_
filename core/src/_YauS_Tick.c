@@ -40,7 +40,7 @@ __attribute__((weak)) void LLD_TickInit(void)
 
 __attribute__((weak)) uint32_t LLD_GetTick(void)
 {
-
+	return 0;
 }
 
 void YAUS_TickInit(void)
