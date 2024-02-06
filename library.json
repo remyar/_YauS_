@@ -1,5 +1,5 @@
 {
-    "name": "@YauS/core",
+    "name": "YauS-core",
     "version": "0.0.4",
     "description": "YauS is an universal Scheduler",
     "keywords": "Scheduler",
