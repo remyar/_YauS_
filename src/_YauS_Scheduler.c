@@ -19,9 +19,10 @@
 ********************************************************************/
 
 /** INCLUDES *******************************************************/
-#include "_YauS_.h"
-#include "_YauS_Tick.h"
-#include "arch.h"
+#include "./_YauS_.h"
+#include "./_YauS_Tick.h"
+
+//#include "arch.h"
 
 /** CONSTANTS ******************************************************/
 
@@ -35,15 +36,18 @@ static UINT32 _tick = 0;
 #endif
 /** DECLARATIONS ***************************************************/
 
-void YAUS_TaskForce(UINT32 handle){
-    UINT8 i;
+void YAUS_TaskForce(uint32_t handle)
+{
+    uint8_t i;
 
     /* on cherche un slot de libre */
     for (i = 0; i < YAUS_MAX_TASKS; i++)
     {
-        if (tasks[i].idx == handle){
+        if (tasks[i].idx == handle)
+        {
             //--- Execution des taches
-            if (tasks[i].run != NULL){
+            if (tasks[i].run != NULL)
+            {
                 tasks[i].status = RUNNING_STATUS;
                 tasks[i].run();
                 tasks[i].status = END_RUN_STATUS;
@@ -52,9 +56,9 @@ void YAUS_TaskForce(UINT32 handle){
     }
 }
 
-UINT32 YAUS_TaskCreate(STRING name, void *initFunc, void *runFunc, INT16 period, INT16 priority)
+uint32_t YAUS_TaskCreate(char *name, void *initFunc, void *runFunc, int16_t period, int16_t priority)
 {
-    UINT8 i, j;
+    uint8_t i, j;
 
     /* on cherche un slot de libre */
     for (i = 0; i < YAUS_MAX_TASKS; i++)
@@ -99,7 +103,7 @@ UINT32 YAUS_TaskCreate(STRING name, void *initFunc, void *runFunc, INT16 period,
             break;
         }
     }
-    return (UINT32)tasks[i].idx;
+    return (uint32_t)tasks[i].idx;
 }
 
 void YAUS_HookTick(void *hookFunc)
@@ -108,10 +112,9 @@ void YAUS_HookTick(void *hookFunc)
         funcIdleHook = (PTR_TASK_RUN_FUNC)hookFunc;
 }
 
-void YAUS_Init(void *callbackInit)
+void YAUS_Init()
 {
-    UINT8 i;
-    PTR_TASK_INIT_FUNC func = (PTR_TASK_INIT_FUNC)callbackInit;
+    uint8_t i;
 
     for (i = 0; i < YAUS_MAX_TASKS; i++)
     {
@@ -122,8 +125,6 @@ void YAUS_Init(void *callbackInit)
     YAUS_msgInit();
 
     TICK_Init();
-
-    HAL_ArchInit();
 
 #ifdef YAUS_USE_ARDUINO_MILLIS
     _tick = HAL_TickCount();
@@ -138,16 +139,11 @@ void YAUS_Init(void *callbackInit)
     CONS_Init();
 #endif
 
-    //-- si l'utilsiateur précise une fonction personaliser d'init
-    //-- on l"exécute
-
-    if (func != NULL)
-        func();
 }
 
 void YAUS_Update(void)
 {
-    UINT8 i;
+    uint8_t i;
 
     for (i = 0; i < YAUS_MAX_TASKS; i++)
     {
@@ -165,10 +161,10 @@ void YAUS_Update(void)
     }
 }
 
-void YAUS_Run(BOOL blocking)
+void YAUS_Run(bool blocking)
 {
-    UINT32 tick;
-    static UINT8 i = 0;
+    uint32_t tick;
+    static uint8_t i = 0;
 
     do
     {
@@ -184,7 +180,7 @@ void YAUS_Run(BOOL blocking)
         //-- Mise a jours des taches ayant besoin d'etre initialis� */
         if ((tasks[i].init != NULL) && (tasks[i].status == INIT_STATUS))
         {
-            if (tasks[i].init() == TRUE)
+            if (tasks[i].init() == true)
                 tasks[i].status = READY_STATUS;
             else
                 tasks[i].status = WAITING_STATUS;

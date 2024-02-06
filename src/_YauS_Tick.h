@@ -20,21 +20,21 @@
 #define _LLD_TICK_H_INCLUDED
 
 /** INCLUDES *******************************************************/
-#include "_YauS_type.h"
-#include "_YauS_Config.h"
-#include "_YauS_.h"
+#include "./_YauS_type.h"
+#include "../_YauS_Config.h"
+#include "./_YauS_.h"
 
 /** CONSTANTS ******************************************************/
 
 /** MACROS *********************************************************/
 
 /** VARIABLES ******************************************************/
-extern PTR_TASK_RUN_FUNC   funcIdleHook;
+extern PTR_TASK_RUN_FUNC funcIdleHook;
 
 /** DECLARATIONS ***************************************************/
-void	TICK_Init(void);
-UINT32	TICK_Count(void);
-UINT32	TICK_nbCountSince(UINT32 lastCount);
-void  TICK_HandleIT(void);
+void TICK_Init(void);
+uint32_t TICK_Count(void);
+uint32_t TICK_nbCountSince(uint32_t lastCount);
+void TICK_HandleIT(void);
 
 #endif /* _LLD_TICK_H_INCLUDED */

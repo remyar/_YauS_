@@ -20,16 +20,15 @@
 #define _YAUS__H_INCLUDED
 
 /** INCLUDES *******************************************************/
-#include "arch.h"
-#include "_YauS_type.h"
-#include "_YauS_Config.h"
-#include "_YauS_Tick.h"
-#include "_YauS_Queue.h"
+#include "./_YauS_Type.h"
+#include "../_YauS_Config.h"
+#include "./_YauS_Tick.h"
+#include "./_YauS_Queue.h"
 #ifdef YAUS_USE_MODULE_CONSOLE
 #include "CONS_Task.h"
 #endif
 #ifdef YAUS_USE_MODULE_DRIVERS
-#include "drivers.h"
+#include "./drivers/drivers.h"
 #endif
 
 /** CONSTANTS ******************************************************/
@@ -43,12 +42,12 @@
 extern s_TASK tasks[YAUS_MAX_TASKS];
 
 /** DECLARATIONS ***************************************************/
-UINT32 YAUS_TaskCreate(STRING name, void *initFunc, void *runFunc, INT16 period, INT16 priority);
+uint32_t YAUS_TaskCreate(char *name, void *initFunc, void *runFunc, int16_t period, int16_t priority);
 void YAUS_HookTick(void *hookFunc);
 
-void YAUS_Init(void *callbackInit);
+void YAUS_Init(void);
 void YAUS_Update(void);
-void YAUS_Run(BOOL blocking);
-void YAUS_TaskForce(UINT32 handle);
+void YAUS_Run(bool blocking);
+void YAUS_TaskForce(uint32_t handle);
 
 #endif /* _YAUS__H_INCLUDED */

@@ -13,7 +13,7 @@
 //------------------------------------------------------------------------------
 // Fichiers Inclus
 //------------------------------------------------------------------------------
-#include "_YauS_Queue.h"
+#include "./_YauS_Queue.h"
 #include <string.h>
 
 s_YAUS_QUEUE_INFO queueInfo;
@@ -24,13 +24,13 @@ s_YAUS_QUEUE queue[YAUS_MAX_MSG];
 //==============================================================================
 void YAUS_msgInit(void)
 {
-	UINT32 i;
+	uint32_t i;
 
 	for (i = 0; i < YAUS_MAX_MSG; i++)
 	{
 		queue[i].handle = YAUS_QUEUE_NO_HANDLE;
 		queue[i].idx = 0;
-		memset(queue[i].data, 0, YAUS_MAX_LENGTH_MSG);
+		memset(queue[i].data, 0, sizeof(queue[i].data));
 	}
 }
 
@@ -39,10 +39,10 @@ void YAUS_msgInit(void)
 //
 // DESCRIPTION :
 //------------------------------------------------------------------------------
-UINT32 YAUS_msgSend(UINT32 handle, void *data)
+uint32_t YAUS_msgSend(uint32_t handle, void *data)
 {
-	UINT32 returnVal = YAUS_QUEUE_NO_HANDLE;
-	UINT32 i, idx;
+	uint32_t returnVal = YAUS_QUEUE_NO_HANDLE;
+	uint32_t i, idx;
 
 	idx = 0;
 
@@ -75,16 +75,11 @@ UINT32 YAUS_msgSend(UINT32 handle, void *data)
 	if (queueInfo.nbQueueIsUsed >= (YAUS_MAX_MSG - 16))
 	{
 		//-- si on arrive ici alors c'est que la queue et presque pleine
-		//CONS_flush();
-		//CONS_print("WARNING : number of YAUS_msg = %d / %d \r\n", (UINT16)queueInfo.nbQueueIsUsed, YAUS_MAX_MSG);
 	}
 
 	if (queueInfo.nbQueueIsUsed >= YAUS_MAX_MSG)
 	{
-		CONS_flush();
-		//-- si on arrive ici alors c'est que la queue et presque pleine
-		CONS_print("FATAL ERROR : number of YAUS_msg = %d / %d \r\n", (UINT16)queueInfo.nbQueueIsUsed, YAUS_MAX_MSG);
-		CONS_flush();
+		//-- si on arrive ici alors c'est que la queue et pleine
 		while (1)
 			;
 	}
@@ -96,9 +91,9 @@ UINT32 YAUS_msgSend(UINT32 handle, void *data)
 //
 // DESCRIPTION :
 //------------------------------------------------------------------------------
-UINT32 YAUS_msgGetNbElement(UINT32 handle)
+uint32_t YAUS_msgGetNbElement(uint32_t handle)
 {
-	UINT32 i, nb = 0;
+	uint32_t i, nb = 0;
 
 	/* on cherche un idx du message en cours */
 	for (i = 0; i < YAUS_MAX_MSG; i++)
@@ -117,10 +112,10 @@ UINT32 YAUS_msgGetNbElement(UINT32 handle)
 //
 // DESCRIPTION :
 //------------------------------------------------------------------------------
-UINT32 YAUS_msgRead(UINT32 handle, void *data )
+uint32_t YAUS_msgRead(uint32_t handle, void *data)
 {
-	UINT32 returnLen = 0;
-	UINT32 i, idx;
+	uint32_t returnLen = 0;
+	uint32_t i, idx;
 
 	if (handle != YAUS_QUEUE_NO_HANDLE)
 	{
@@ -144,7 +139,7 @@ UINT32 YAUS_msgRead(UINT32 handle, void *data )
 				/* on libére le slot */
 				queue[i].handle = YAUS_QUEUE_NO_HANDLE;
 				queue[i].idx = YAUS_QUEUE_NO_HANDLE;
-				memset(queue[i].data, 0, YAUS_MAX_LENGTH_MSG);
+				memset(queue[i].data, 0, sizeof(queue[i].data));
 				queueInfo.nbQueueIsUsed--;
 				break;
 			}

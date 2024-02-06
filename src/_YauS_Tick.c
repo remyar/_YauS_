@@ -19,54 +19,52 @@
 ********************************************************************/
 
 /** INCLUDES *******************************************************/
-#include "_YauS_Tick.h"
-#include "arch.h"
+#include "./_YauS_Tick.h"
 
 /** CONSTANTS ******************************************************/
 
 /** MACROS *********************************************************/
-#define	DIFF_COUNT(R, C, L)			if ((C) >= (L))				\
-										(R) = (C) - (L);		\
-									else						\
-										(R) = (C) + 0xFFFFFFFF + 1 - (L)
+#define DIFF_COUNT(R, C, L) \
+	if ((C) >= (L))         \
+		(R) = (C) - (L);    \
+	else                    \
+		(R) = (C) + 0xFFFFFFFF + 1 - (L)
 
 /** VARIABLES ******************************************************/
-static UINT32	_tick;
+static uint32_t _tick;
 
 /** DECLARATIONS ***************************************************/
 
-void	TICK_Init(void)
+void TICK_Init(void)
 {
-    HAL_TickInit();
- //   _tick = 0;
+
 }
 
-UINT32	TICK_Count(void)
+uint32_t TICK_Count(void)
 {
 	return HAL_GetTick();
 }
 
-UINT32	TICK_nbCountSince(UINT32 lastCount)
+uint32_t TICK_nbCountSince(uint32_t lastCount)
 {
-	UINT64	res;
-	UINT32	newCount;
+	uint64_t res;
+	uint32_t newCount;
 
 	newCount = HAL_GetTick();
 
 	DIFF_COUNT(res, newCount, lastCount);
 
-	return (UINT32)(res);
+	return (uint32_t)(res);
 }
-
 
 //=============================================================================
 //--- INTERRUPTIONS
 //=============================================================================
-void  TICK_HandleIT(void)
+void TICK_HandleIT(void)
 {
 
-	YAUS_Update();  //-- mise a jours des taches
+	YAUS_Update(); //-- mise a jours des taches
 
-	if ( funcIdleHook != NULL )
-	    funcIdleHook();
+	if (funcIdleHook != NULL)
+		funcIdleHook();
 }
