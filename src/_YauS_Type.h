@@ -22,10 +22,6 @@
 /** INCLUDES *******************************************************/
 #include "../_YauS_Config.h"
 
-#if defined(STM32F1)
-#include <stm32f1xx.h>
-#endif
-
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
