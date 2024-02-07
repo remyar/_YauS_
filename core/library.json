@@ -1,6 +1,6 @@
 {
     "name": "YauS-core",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "YauS-core is an universal Scheduler",
     "keywords": "Scheduler YauS core",
     "repository": {
@@ -15,8 +15,11 @@
     ],
     "license": "MIT",
     "homepage": "https://github.com/remyar/_YauS_",
-    "dependencies": {
+    "dependencies": {},
+    "build": {
+        "extraScript": "scripts/env.py"
     },
+    "libArchive": false,
     "frameworks": "*",
     "platforms": "*"
 }

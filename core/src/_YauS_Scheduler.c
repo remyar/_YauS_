@@ -22,7 +22,6 @@
 #include "./_YauS_.h"
 #include "./_YauS_Tick.h"
 #include "./_YauS_Type.h"
-//#include "arch.h"
 
 /** CONSTANTS ******************************************************/
 
@@ -120,6 +119,10 @@ void YAUS_Init(void)
         tasks[i].init = NULL;
         tasks[i].run = NULL;
     }
+
+#ifdef YAUS_USE_ARCH
+    ARCH_Init();
+#endif
 
     YAUS_msgInit();
 

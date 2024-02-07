@@ -42,14 +42,4 @@ void ARCH_Init(void)
     {
         Error_Handler();
     }
-
-    GPIO_InitTypeDef GPIO_InitStruct = {0};
-
-    if (__HAL_RCC_GPIOC_IS_CLK_DISABLED())
-        __HAL_RCC_GPIOC_CLK_ENABLE();
-
-    GPIO_InitStruct.Pin = GPIO_PIN_13;
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 }
