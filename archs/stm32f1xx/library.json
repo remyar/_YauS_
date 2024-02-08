@@ -18,6 +18,6 @@
     "dependencies": {
         "YauS-core": "*"
     },
-    "frameworks": "stm32cube",
+    "frameworks": "*",
     "platforms": "*"
 }
