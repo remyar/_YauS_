@@ -7,7 +7,7 @@
 #include "arch_it.h"
 #include "arch_uart.h"
 #include "arch_pwm.h"
-
+#include "arch_tick.h"
 
 void ARCH_Init(void);
 

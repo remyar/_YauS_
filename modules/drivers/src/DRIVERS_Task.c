@@ -25,6 +25,9 @@
 //-----------------------------------------------------------------------------
 // Variables globales
 //-----------------------------------------------------------------------------
+__attribute__((weak)) void ARCH_Uart1SendByte(uint8_t data)
+{
+}
 
 //-----------------------------------------------------------------------------
 // FONCTION    : _Init
@@ -49,7 +52,7 @@ static void _Run(void)
         if (YAUS_msgRead(YAUS_QUEUE_UART1_TX_HANDLE, &uart1Data))
         {
             for (uint8_t i = 0; i < uart1Data.length ; i++ ){
-                ARCH_UartSendByte(USART1, uart1Data.data[i]);
+                ARCH_Uart1SendByte(uart1Data.data[i]);
             }
         }
     }

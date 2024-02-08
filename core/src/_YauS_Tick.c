@@ -19,6 +19,7 @@
 ********************************************************************/
 
 /** INCLUDES *******************************************************/
+#include <_YauS_.h>
 #include "./_YauS_Tick.h"
 
 /** CONSTANTS ******************************************************/
@@ -33,24 +34,15 @@
 /** VARIABLES ******************************************************/
 
 /** DECLARATIONS ***************************************************/
-__attribute__((weak)) void LLD_TickInit(void)
-{
-
-}
-
-__attribute__((weak)) uint32_t LLD_GetTick(void)
-{
-	return 0;
-}
 
 void YAUS_TickInit(void)
 {
-	LLD_TickInit();
+	ARCH_TickInit();
 }
 
 uint32_t YAUS_TickCount(void)
 {
-	return LLD_GetTick();
+	return ARCH_GetTick();
 }
 
 uint32_t YAUS_TickNbCountSince(uint32_t lastCount)

@@ -9,7 +9,10 @@ enum{
     PWM_MAX
 };
 
-void ARCH_PwmInit(uint32_t uartNum, unsigned long baud, PTR_LL_CALLBACK_FUNC ptrCallback);
+void ARCH_PwmInit(uint32_t periphNum, unsigned long baud, uint32_t flags);
 void ARCH_PwmSetDutyCycle(uint8_t periphNum, float percent);
+
+void ARCH_Pwm1Init(unsigned long freq, uint32_t flags);
+void ARCH_Pwm1SetDutyCycle(float percent);
 
 #endif

@@ -205,10 +205,10 @@ int16_t TASK_list(int16_t argc, uint8_t *const argv[])
                 break;
             }
 
-            /* priorit� */
+            /* priorité */
             CONS_print("%d    ", tasks[i].priority);
 
-            /* num�ros de la tache */
+            /* numéros de la tache */
             CONS_print("%d  ", tasks[i].idx);
 
             /* utilisation CPu */

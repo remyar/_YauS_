@@ -3,7 +3,7 @@
 
 TIM_HandleTypeDef htim3;
 
-void ARCH_PwmInit(uint32_t pwmNum, unsigned long freq, PTR_LL_CALLBACK_FUNC ptrCallback)
+void ARCH_PwmInit(uint32_t periphNum, unsigned long freq, uint32_t flags)
 {
     switch (pwmNum)
     {
@@ -73,4 +73,12 @@ void ARCH_PwmSetDutyCycle(uint8_t periphNum, float percent){
         __HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, ((float)htim3.Init.Period * ((float)percent / 100.0)));
         break;
     }
+}
+
+void ARCH_Pwm1Init(unsigned long freq, uint32_t flags){
+    ARCH_PwmInit(PWMB0, freq, flags);
+}
+
+void ARCH_Pwm1SetDutyCycle(float percent){
+    ARCH_PwmSetDutyCycle(PWMB0 , percent);
 }

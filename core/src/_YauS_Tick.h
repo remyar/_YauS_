@@ -20,9 +20,7 @@
 #define _LLD_TICK_H_INCLUDED
 
 /** INCLUDES *******************************************************/
-#include "./_YauS_type.h"
-#include "../_YauS_Config.h"
-#include "./_YauS_.h"
+#include <_YauS_.h>
 
 /** CONSTANTS ******************************************************/
 
@@ -32,8 +30,6 @@
 extern PTR_TASK_RUN_FUNC funcIdleHook;
 
 /** DECLARATIONS ***************************************************/
-__attribute__((weak)) void LLD_TickInit(void);
-__attribute__((weak)) uint32_t LLD_GetTick(void) ;
 
 void YAUS_TickInit(void);
 uint32_t YAUS_TickCount(void);

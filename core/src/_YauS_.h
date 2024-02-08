@@ -31,7 +31,7 @@
 #include "DRIVERS_Task.h"
 #endif
 #ifdef YAUS_USE_ARCH
-  #include <arch.h>
+#include <arch.h>
 #endif
 /** CONSTANTS ******************************************************/
 #define YAUS_TimerCreate(X, Y, Z) LLD_TimerCreate(X, Y, Z)

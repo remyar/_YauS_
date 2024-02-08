@@ -1,4 +1,3 @@
-#include <_YauS_.h>
 
 #include "arch.h"
 

@@ -3,7 +3,7 @@
 UART_HandleTypeDef huart1;
 static uint8_t dataHuart1;
 
-void ARCH_UartInit(uint32_t uartNum, unsigned long baud, PTR_LL_CALLBACK_FUNC ptrCallback)
+void ARCH_UartInit(uint32_t uartNum, unsigned long baud, uint32_t flags)
 {
     UART_HandleTypeDef *huart;
     GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -64,10 +64,16 @@ void ARCH_UartInit(uint32_t uartNum, unsigned long baud, PTR_LL_CALLBACK_FUNC pt
     }
 }
 
-void ARCH_UartSendByteSync(uint32_t uartNum, uint8_t data) {
+void ARCH_Uart1Init(uint32_t speed, uint32_t flags)
+{
+    ARCH_UartInit(USART1, speed, flags);
+}
+
+void ARCH_UartSendByteSync(uint32_t uartNum, uint8_t data)
+{
     if (uartNum == (uint32_t)USART1)
     {
-        HAL_UART_Transmit(&huart1, &data, 1 , 10);
+        HAL_UART_Transmit(&huart1, &data, 1, 10);
     }
     else
     {
@@ -80,12 +86,18 @@ void ARCH_UartSendByte(uint32_t uartNum, uint8_t data)
     if (uartNum == (uint32_t)USART1)
     {
         //-- wait end of last character finish to send
-        while ( HAL_UART_Transmit_IT(&huart1, &data, 1) != HAL_OK );
+        while (HAL_UART_Transmit_IT(&huart1, &data, 1) != HAL_OK)
+            ;
     }
     else
     {
         Error_Handler();
     }
+}
+
+void ARCH_Uart1SendByte(uint8_t data)
+{
+    ARCH_UartSendByte(USART1, data);
 }
 
 //-- rx received byte callback
