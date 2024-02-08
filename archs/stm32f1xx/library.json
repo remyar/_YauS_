@@ -1,6 +1,6 @@
 {
     "name": "YauS-stm32f1xx",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "YauS-stm32f1xx is low level driver for stm32f1xx",
     "keywords": "Scheduler YauS stm32f1xx",
     "repository": {
@@ -17,5 +17,7 @@
     "homepage": "https://github.com/remyar/_YauS_",
     "dependencies": {
         "YauS-core": "*"
-    }
+    },
+    "frameworks": "stm32cube",
+    "platforms": "*"
 }
