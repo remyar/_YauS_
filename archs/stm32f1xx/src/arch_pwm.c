@@ -5,7 +5,7 @@ TIM_HandleTypeDef htim3;
 
 void ARCH_PwmInit(uint32_t periphNum, unsigned long freq, uint32_t flags)
 {
-    switch (pwmNum)
+    switch (periphNum)
     {
         case ( PWMB0 ):
             //-- use tim3 ch3

@@ -37,6 +37,10 @@
 #define true 1
 #define false 0
 #endif
+
+#define I2C_WRITE 0
+#define I2C_READ 1
+
 /** MACROS *********************************************************/
 
 typedef bool (*PTR_TASK_INIT_FUNC)(void);
@@ -83,6 +87,14 @@ typedef struct
     float dutyCycle;
     float frequence;
 } s_MSG_PWM;
+
+typedef struct
+{
+    uint8_t addr;
+    uint8_t length;
+    uint8_t data[YAUS_MAX_LENGTH_MSG - 3];
+    uint8_t stop;
+} s_MSG_I2C;
 
 /** VARIABLES ******************************************************/
 

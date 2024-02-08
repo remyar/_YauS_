@@ -6,6 +6,7 @@
 #include "stm32f1xx.h"
 
 #include "arch_uart.h"
+#include "arch_i2c.h"
 
 void NMI_Handler(void);
 void HardFault_Handler(void);

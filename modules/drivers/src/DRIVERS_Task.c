@@ -29,6 +29,10 @@ __attribute__((weak)) void ARCH_Uart1SendByte(uint8_t data)
 {
 }
 
+__attribute__((weak)) void ARCH_I2C2SendBytes(uint8_t addr, uint8_t *pData, uint8_t length)
+{
+}
+
 //-----------------------------------------------------------------------------
 // FONCTION    : _Init
 //
@@ -54,6 +58,32 @@ static void _Run(void)
             for (uint8_t i = 0; i < uart1Data.length ; i++ ){
                 ARCH_Uart1SendByte(uart1Data.data[i]);
             }
+        }
+    }
+    s_MSG_I2C sMsgI2c;
+    if (YAUS_msgGetNbElement(YAUS_QUEUE_I2C2_TX_HANDLE) > 0)
+    {
+        if (YAUS_msgRead(YAUS_QUEUE_I2C2_TX_HANDLE, &sMsgI2c))
+        {
+            ARCH_I2C2SendBytes(sMsgI2c.addr, &sMsgI2c.data, sMsgI2c.length);
+        }
+    }
+
+    s_MSG_I2C sMsgVI2c;
+    if (YAUS_msgGetNbElement(YAUS_QUEUE_VI2C1_TX_HANDLE) > 0)
+    {
+        if (YAUS_msgRead(YAUS_QUEUE_VI2C1_TX_HANDLE, &sMsgI2c))
+        {
+            //LLVI2C_SendBytes(LL_VI2C1, sMsgI2c.addr, &sMsgI2c.data, sMsgI2c.length, sMsgI2c.stop);
+        }
+    }
+
+    s_MSG_PWM sMsgPwm;
+    if (YAUS_msgGetNbElement(YAUS_QUEUE_PWMPB0_TX_HANDLE) > 0)
+    {
+        if (YAUS_msgRead(YAUS_QUEUE_PWMPB0_TX_HANDLE, &sMsgPwm))
+        {
+           // LLPWM_SetDutyCycle(LL_PWM_PB0, sMsgPwm.dutyCycle);
         }
     }
 }

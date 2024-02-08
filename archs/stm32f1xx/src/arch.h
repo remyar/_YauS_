@@ -8,6 +8,7 @@
 #include "arch_uart.h"
 #include "arch_pwm.h"
 #include "arch_tick.h"
+#include "arch_i2c.h"
 
 void ARCH_Init(void);
 
