@@ -438,7 +438,7 @@ static int16_t _readline(void)
 static bool _Init(void)
 {
    _initConsoleBuffer();
-   return TRUE;
+   return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -453,7 +453,7 @@ static void _Run(void)
    uint8_t c = 0;
    int16_t len;
 
-   uint32_t sdFreeSpace, sdTotalSpace;
+   //uint32_t sdFreeSpace, sdTotalSpace;
 
    switch (ConsoleState)
    {
