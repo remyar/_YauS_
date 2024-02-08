@@ -212,7 +212,7 @@ int16_t TASK_list(int16_t argc, uint8_t *const argv[])
             CONS_print("%d  ", tasks[i].idx);
 
             /* utilisation CPu */
-            float percent = (float)((float)tasks[i].taskUseTick / (float)TICK_Count()) * 100.0;
+            float percent = (float)((float)tasks[i].taskUseTick / (float)YAUS_TickCount()) * 100.0;
 
             if (percent < 1.0)
                 CONS_print("<1%% ");
