@@ -1,6 +1,6 @@
 {
     "name": "YauS-drivers",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "YauS-drivers is a driver module for YauS",
     "keywords": "Scheduler YauS drivers",
     "repository": {

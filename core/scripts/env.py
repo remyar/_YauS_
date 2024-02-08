@@ -11,6 +11,16 @@ for lib in libs:
                 "YAUS_USE_ARCH",
             ])
 
+    if "YauS-console" in lib:
+        env.Append(CPPDEFINES=[
+            "YAUS_USE_MODULE_CONSOLE",
+        ])
+
+    if "YauS-drivers" in lib:
+        env.Append(CPPDEFINES=[
+            "YAUS_USE_MODULE_DRIVERS",
+        ])
+
 
 
 

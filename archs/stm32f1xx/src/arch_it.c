@@ -144,3 +144,8 @@ void SysTick_Handler(void)
 
     /* USER CODE END SysTick_IRQn 1 */
 }
+
+void USART1_IRQHandler(void)
+{
+    HAL_UART_IRQHandler(&huart1);
+}
