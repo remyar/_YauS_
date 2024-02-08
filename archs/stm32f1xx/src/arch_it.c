@@ -165,3 +165,9 @@ void I2C2_ER_IRQHandler(void)
 {
     HAL_I2C_ER_IRQHandler(&hi2c2);
 }
+
+
+void ADC1_2_IRQHandler(void)
+{
+    HAL_ADC_IRQHandler(&hadc1);
+}

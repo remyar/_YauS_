@@ -6,6 +6,7 @@
 #include <_YauS_.h>
 #include "arch_gpio.h"
 #include "arch_it.h"
+#include "arch_adc.h"
 #include "arch_uart.h"
 #include "arch_pwm.h"
 #include "arch_tick.h"

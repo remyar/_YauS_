@@ -41,6 +41,10 @@ __attribute__((weak)) void ARCH_Pwm1SetDutyCycle(float percent)
 {
 }
 
+__attribute__((weak)) void ARCH_AdcProcess(void)
+{
+}
+
 //-----------------------------------------------------------------------------
 // FONCTION    : _Init
 //
@@ -94,6 +98,8 @@ static void _Run(void)
             ARCH_Pwm1SetDutyCycle(sMsgPwm.dutyCycle);
         }
     }
+
+    ARCH_AdcProcess();
 }
 
 void DRIVERS_Process(void)
