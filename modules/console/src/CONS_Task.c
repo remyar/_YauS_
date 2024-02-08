@@ -13,7 +13,7 @@
 //-----------------------------------------------------------------------------
 // Fichiers Inclus
 //-----------------------------------------------------------------------------
-#include "_YauS_.h"
+#include <_YauS_.h>
 #include "CONS_Task.h"
 #include <stdarg.h>
 #include <math.h>
@@ -26,28 +26,28 @@
 //-----------------------------------------------------------------------------
 extern const char logo[8][64];
 
-static const UINT8 erase_seq[] = "\b \b";  /* erase sequence	*/
-static const UINT8 tab_seq[] = "        "; /* used to expand TABs	*/
+static const uint8_t erase_seq[] = "\b \b";  /* erase sequence	*/
+static const uint8_t tab_seq[] = "        "; /* used to expand TABs	*/
 
-UINT8 console_buffer[CONFIG_SYS_CBSIZE + 1]; /* console I/O buffer	*/
-UINT8 envname[CONFIG_SYS_CBSIZE];
-UINT8 idxConsoleBuffer;
+uint8_t console_buffer[CONFIG_SYS_CBSIZE + 1]; /* console I/O buffer	*/
+uint8_t envname[CONFIG_SYS_CBSIZE];
+uint8_t idxConsoleBuffer;
 
 //=============================================================================
 //--- DEFINITIONS
 //=============================================================================
-void CONS_printFloat(FLOAT32 value, UINT8 nbDec)
+void CONS_printFloat(float value, uint8_t nbDec)
 {
-   INT32 entier = (INT32)value;
-   FLOAT32 decimal = value - entier;
+   int32_t entier = (int32_t)value;
+   float decimal = value - entier;
 
-   CONS_print("%d.%u", entier, (UINT32)(decimal * powf(10.0, (FLOAT32)nbDec)));
+   CONS_print("%d.%u", entier, (uint32_t)(decimal * powf(10.0, (float)nbDec)));
 }
 
-void CONS_print(const UINT8 *pFormat, ...)
+void CONS_print(const uint8_t *pFormat, ...)
 {
-   UINT8 tab[64];
-   UINT8 length, i;
+   uint8_t tab[64];
+   uint8_t length, i;
    va_list ap;
 
    /* Forward call to vprintf */
@@ -67,7 +67,7 @@ void _initConsoleBuffer(void)
    console_buffer[idxConsoleBuffer] = 0;
    console_buffer[idxConsoleBuffer + 1] = 0;
 }
-void _putCharInConsoleBuffer(UINT8 c)
+void _putCharInConsoleBuffer(uint8_t c)
 {
    console_buffer[idxConsoleBuffer] = c;
    if (c != 0)
@@ -77,7 +77,7 @@ void _putCharInConsoleBuffer(UINT8 c)
    }
 }
 
-UINT8 _getLastCharInConsoleBuffer(void)
+uint8_t _getLastCharInConsoleBuffer(void)
 {
    return console_buffer[idxConsoleBuffer - 1];
 }
@@ -87,9 +87,9 @@ UINT8 _getLastCharInConsoleBuffer(void)
 //
 // DESCRIPTION :
 //-----------------------------------------------------------------------------
-static INT16 _parse_line(UINT8 *line, UINT8 *argv[])
+static int16_t _parse_line(uint8_t *line, uint8_t *argv[])
 {
-   INT16 nargs = 0;
+   int16_t nargs = 0;
    while (nargs < 16)
    {
       /* skip any white space */
@@ -116,7 +116,7 @@ static INT16 _parse_line(UINT8 *line, UINT8 *argv[])
 
       *line++ = '\0'; /* terminate current arg	 */
    }
-   CONS_print("** Too many args (max. %d) **\r\n", (UINT32)16);
+   CONS_print("** Too many args (max. %d) **\r\n", (uint32_t)16);
    return (nargs);
 }
 //-----------------------------------------------------------------------------
@@ -124,16 +124,16 @@ static INT16 _parse_line(UINT8 *line, UINT8 *argv[])
 //
 // DESCRIPTION :
 //-----------------------------------------------------------------------------
-static void _process_macros(const UINT8 *input, UINT8 *output)
+static void _process_macros(const uint8_t *input, uint8_t *output)
 {
-   UINT8 c, prev;
-   const UINT8 *varname_start = NULL;
-   INT16 inputcnt = strlen(input);
-   INT16 outputcnt = CONFIG_SYS_CBSIZE;
-   INT16 state = 0; /* 0 = waiting for '$'  */
-   INT16 i;
-   UINT8 *envval;
-   INT16 envcnt; /* Varname # of chars */
+   uint8_t c, prev;
+   const uint8_t *varname_start = NULL;
+   int16_t inputcnt = strlen(input);
+   int16_t outputcnt = CONFIG_SYS_CBSIZE;
+   int16_t state = 0; /* 0 = waiting for '$'  */
+   int16_t i;
+   uint8_t *envval;
+   int16_t envcnt; /* Varname # of chars */
 
    /* 1 = waiting for '(' or '{' */
    /* 2 = waiting for ')' or '}' */
@@ -248,17 +248,17 @@ static void _process_macros(const UINT8 *input, UINT8 *output)
 //
 // DESCRIPTION :
 //-----------------------------------------------------------------------------
-static INT16 _builtin_run_command(const UINT8 *cmd)
+static int16_t _builtin_run_command(const uint8_t *cmd)
 {
-   UINT8 cmdbuf[CONFIG_SYS_CBSIZE]; /* working copy of cmd		*/
-   UINT8 *token;                    /* start of token in cmdbuf	*/
-   UINT8 *sep;                      /* end of token (separator) in cmdbuf */
-   UINT8 finaltoken[CONFIG_SYS_CBSIZE];
-   UINT8 *str = cmdbuf;
-   UINT8 *argv[16 + 1]; /* NULL terminated	*/
-   INT16 argc, inquotes;
-   INT16 repeatable = 1;
-   INT16 rc = 0;
+   uint8_t cmdbuf[CONFIG_SYS_CBSIZE]; /* working copy of cmd		*/
+   uint8_t *token;                    /* start of token in cmdbuf	*/
+   uint8_t *sep;                      /* end of token (separator) in cmdbuf */
+   uint8_t finaltoken[CONFIG_SYS_CBSIZE];
+   uint8_t *str = cmdbuf;
+   uint8_t *argv[16 + 1]; /* NULL terminated	*/
+   int16_t argc, inquotes;
+   int16_t repeatable = 1;
+   int16_t rc = 0;
 
    if (!cmd || !*cmd)
    {
@@ -326,9 +326,9 @@ static INT16 _builtin_run_command(const UINT8 *cmd)
 //
 // DESCRIPTION :
 //-----------------------------------------------------------------------------
-static INT16 _run_command()
+static int16_t _run_command()
 {
-   INT16 retVal = 0;
+   int16_t retVal = 0;
    if (_builtin_run_command(console_buffer) == -1)
    {
       retVal = 1;
@@ -342,9 +342,9 @@ static INT16 _run_command()
 //
 // DESCRIPTION :
 //-----------------------------------------------------------------------------
-static INT16 _readline(void)
+static int16_t _readline(void)
 {
-   UINT8 c;
+   uint8_t c;
 
    if (CONS_kbhit())
    {
@@ -435,7 +435,7 @@ static INT16 _readline(void)
 //
 // DESCRIPTION : Init de la tache
 //-----------------------------------------------------------------------------
-static BOOL _Init(void)
+static bool _Init(void)
 {
    _initConsoleBuffer();
    return TRUE;
@@ -448,12 +448,12 @@ static BOOL _Init(void)
 //-----------------------------------------------------------------------------
 static void _Run(void)
 {
-   static UINT8 ConsoleState = 0;
-   UINT16 i;
-   UINT8 c = 0;
-   INT16 len;
+   static uint8_t ConsoleState = 0;
+   uint16_t i;
+   uint8_t c = 0;
+   int16_t len;
 
-   UINT32 sdFreeSpace, sdTotalSpace;
+   uint32_t sdFreeSpace, sdTotalSpace;
 
    switch (ConsoleState)
    {

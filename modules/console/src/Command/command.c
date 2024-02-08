@@ -34,8 +34,8 @@
 const cmd_tbl_t __u_boot_cmd[] =
     {
         {"task-stats", 1, 0, TASK_list, "Displays a table showing the state of each task"},
-        {"sensors", 2, 1, SENSORS_cmd, "Display all sensors"},
-        {"measures", 2, 1, MEASURES_cmd, "Display all measures"},
+        //{"sensors", 2, 1, SENSORS_cmd, "Display all sensors"},
+        //{"measures", 2, 1, MEASURES_cmd, "Display all measures"},
         //{"wifi", 2, 0, WIFI_cmd, "Display This"},
         //	{"reset"		, 1		, 0		, CPU_reset			, "Perform RESET of the CPU"},
         {"help", 1, 0, CONS_listCmd, "Display This"},
@@ -52,7 +52,7 @@ const cmd_tbl_t __u_boot_cmd[] =
 //
 // DESCRIPTION :
 //-----------------------------------------------------------------------------
-static INT16 _cmd_usage(const cmd_tbl_t *cmdtp)
+static int16_t _cmd_usage(const cmd_tbl_t *cmdtp)
 {
     CONS_print("%s - %s\r\n", cmdtp->name, cmdtp->usage);
     return 1;
@@ -63,9 +63,9 @@ static INT16 _cmd_usage(const cmd_tbl_t *cmdtp)
 //
 // DESCRIPTION : appel de la commande
 //-----------------------------------------------------------------------------
-static INT16 _cmd_call(cmd_tbl_t *cmdtp, INT16 argc, UINT8 *const argv[])
+static int16_t _cmd_call(cmd_tbl_t *cmdtp, int16_t argc, uint8_t *const argv[])
 {
-    INT16 result;
+    int16_t result;
 
     result = (cmdtp->cmd)(argc, argv);
     if (result)
@@ -78,13 +78,13 @@ static INT16 _cmd_call(cmd_tbl_t *cmdtp, INT16 argc, UINT8 *const argv[])
 //
 // DESCRIPTION : Cherche la commande correspondante
 //-----------------------------------------------------------------------------
-cmd_tbl_t *CMD_find_cmd(const UINT8 *cmd)
+cmd_tbl_t *CMD_find_cmd(const uint8_t *cmd)
 {
     cmd_tbl_t *cmdtp;
     cmd_tbl_t *cmdtp_temp = __u_boot_cmd; /*Init value */
-    UINT16 i, len;
-    const UINT8 *p;
-    UINT16 tabSize = sizeof(__u_boot_cmd) / sizeof(__u_boot_cmd[0]);
+    uint16_t i, len;
+    const uint8_t *p;
+    uint16_t tabSize = sizeof(__u_boot_cmd) / sizeof(__u_boot_cmd[0]);
 
     /*
      * Some commands allow length modifiers (like "cp.b");
@@ -110,7 +110,7 @@ cmd_tbl_t *CMD_find_cmd(const UINT8 *cmd)
 //
 // DESCRIPTION : gestion de la commande
 //-----------------------------------------------------------------------------
-INT16 CMD_process(INT16 argc, UINT8 *argv[], INT16 *repeatable)
+int16_t CMD_process(int16_t argc, uint8_t *argv[], int16_t *repeatable)
 {
     cmd_tbl_t *cmdtp;
 
@@ -127,10 +127,10 @@ INT16 CMD_process(INT16 argc, UINT8 *argv[], INT16 *repeatable)
     return -1;
 }
 
-INT16 CONS_listCmd(INT16 argc, UINT8 *const argv[])
+int16_t CONS_listCmd(int16_t argc, uint8_t *const argv[])
 {
-    UINT16 i, len, j;
-    UINT16 tabSize = sizeof(__u_boot_cmd) / sizeof(__u_boot_cmd[0]);
+    uint16_t i, len, j;
+    uint16_t tabSize = sizeof(__u_boot_cmd) / sizeof(__u_boot_cmd[0]);
 
     CONS_print("Listing of command supported : \r\n");
     CONS_print("\r\n");
@@ -153,10 +153,10 @@ INT16 CONS_listCmd(INT16 argc, UINT8 *const argv[])
     return 0;
 }
 
-INT16 TASK_list(INT16 argc, UINT8 *const argv[])
+int16_t TASK_list(int16_t argc, uint8_t *const argv[])
 {
-    UINT32 i, j;
-    UINT16 len;
+    uint32_t i, j;
+    uint16_t len;
 
     CONS_print("Task");
     for (j = 4; j < 16; j++)
@@ -212,147 +212,14 @@ INT16 TASK_list(INT16 argc, UINT8 *const argv[])
             CONS_print("%d  ", tasks[i].idx);
 
             /* utilisation CPu */
-            FLOAT32 percent = (FLOAT32)((FLOAT32)tasks[i].taskUseTick / (FLOAT32)TICK_Count()) * 100.0;
+            float percent = (float)((float)tasks[i].taskUseTick / (float)TICK_Count()) * 100.0;
 
             if (percent < 1.0)
                 CONS_print("<1%% ");
             else
-                CONS_print("%d%% ", (UINT16)percent);
+                CONS_print("%d%% ", (uint16_t)percent);
 
             CONS_print("\r\n");
-        }
-    }
-    return 0;
-}
-
-INT16 WIFI_cmd(INT16 argc, UINT8 *const argv[])
-{
-    UINT8 i;
-
-    for (i = 1; i < argc; i++)
-    {
-        if (strcmp(argv[i], "start") == 0)
-        {
-            CONS_print("Starting WIFI Driver\r\n");
-        }
-    }
-    return 0;
-}
-
-INT16 SENSORS_cmd(INT16 argc, UINT8 *const argv[])
-{
-    UINT8 i;
-    if (argc == 1)
-    {
-        UINT8 nbMeas;
-        CONS_print("----------------------------------------------");
-        CONS_print("\r\n");
-        CONS_print("sht45r1 : ");
-        CONS_print("\r\n");
-
-        nbMeas = sensTab[SHT45R1_SENSOR].pValues->length;
-        for (UINT8 j = 0; j < nbMeas; j++)
-        {
-            CONS_printFloat(sensTab[SHT45R1_SENSOR].pValues->pValues[j], 2);
-            CONS_print("\r\n");
-        }
-        CONS_print("\r\n");
-        CONS_print("sht45r2 : ");
-        CONS_print("\r\n");
-
-        nbMeas = sensTab[SHT45R2_SENSOR].pValues->length;
-        for (UINT8 j = 0; j < nbMeas; j++)
-        {
-            CONS_printFloat(sensTab[SHT45R2_SENSOR].pValues->pValues[j], 2);
-            CONS_print("\r\n");
-        }
-
-        CONS_print("\r\n");
-        CONS_print("bme680r2 : ");
-        CONS_print("\r\n");
-
-        nbMeas = sensTab[BME680R2_SENSOR].pValues->length;
-        for (UINT8 j = 0; j < nbMeas; j++)
-        {
-            CONS_printFloat(sensTab[BME680R2_SENSOR].pValues->pValues[j], 2);
-            CONS_print("\r\n");
-        }
-    }
-    for (i = 1; i < argc; i++)
-    {
-        if (strcmp(argv[i], "sht45r1") == 0)
-        {
-            CONS_print("----------------------------------------------");
-
-            CONS_print("\r\n");
-
-            UINT8 nbMeas = sensTab[SHT45R1_SENSOR].pValues->length;
-            for (UINT8 j = 0; j < nbMeas; j++)
-            {
-                CONS_printFloat(sensTab[SHT45R1_SENSOR].pValues->pValues[j], 2);
-                CONS_print("\r\n");
-            }
-        }
-        if (strcmp(argv[i], "sht45r2") == 0)
-        {
-            CONS_print("----------------------------------------------");
-
-            CONS_print("\r\n");
-
-            UINT8 nbMeas = sensTab[SHT45R2_SENSOR].pValues->length;
-            for (UINT8 j = 0; j < nbMeas; j++)
-            {
-                CONS_printFloat(sensTab[SHT45R2_SENSOR].pValues->pValues[j], 2);
-                CONS_print("\r\n");
-            }
-        }
-        if (strcmp(argv[i], "bme680r2") == 0)
-        {
-            CONS_print("----------------------------------------------");
-
-            CONS_print("\r\n");
-
-            UINT8 nbMeas = sensTab[BME680R2_SENSOR].pValues->length;
-            for (UINT8 j = 0; j < nbMeas; j++)
-            {
-                CONS_printFloat(sensTab[BME680R2_SENSOR].pValues->pValues[j], 2);
-                CONS_print("\r\n");
-            }
-        }
-    }
-    return 0;
-}
-
-INT16 MEASURES_cmd(INT16 argc, UINT8 *const argv[])
-{
-    UINT8 i;
-    UINT8 tab[16];
-    if (argc == 1)
-    {
-        CONS_print("----------------------------------------------");
-        CONS_print("\r\n");
-        for (UINT8 j = 0; j < MAX_MEASURES; j++)
-        {
-            switch (measTab[j].sensorId)
-            {
-            case SHT45R1_SENSOR:
-                CONS_print("SHT45 Rack1");
-                break;
-            case SHT45R2_SENSOR:
-                CONS_print("SHT45 Rack2");
-                break;
-            case BME680R2_SENSOR:
-                CONS_print("BME680 Rack2");
-                break;
-            }
-
-            CONS_print(" v%d : ", measTab[j].sensorChannel + 1);
-
-            CONS_printFloat(measTab[j].value, 2);
-
-            memset(tab, 0, sizeof(tab));
-            UNIT_GetName(measTab[j].unitIdx, tab);
-            CONS_print(" %s\r\n", tab);
         }
     }
     return 0;

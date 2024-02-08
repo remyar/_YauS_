@@ -28,7 +28,7 @@
 #include "CONS_Task.h"
 #endif
 #ifdef YAUS_USE_MODULE_DRIVERS
-#include "./drivers/drivers.h"
+#include "DRIVERS_Task.h"
 #endif
 #ifdef YAUS_USE_ARCH
   #include <arch.h>

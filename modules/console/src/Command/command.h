@@ -15,12 +15,6 @@
 // Fichiers Inclus
 //-----------------------------------------------------------------------------
 #include "../CONS_Task.h"
-#include "sensors.h"
-#include "sensors_def.h"
-#include "measures.h"
-#include "measures_def.h"
-#include "Units.h"
-//#include "config_cmd_all.h"
 
 //-----------------------------------------------------------------------------
 // Constantes : defines et enums
@@ -34,32 +28,28 @@
 
 typedef struct
 {
-    UINT8	    *name;		/* Command Name			*/
-	UINT16		maxargs;	/* maximum number of arguments	*/
-	UINT16		repeatable;	/* autorepeat allowed?		*/
-	INT16		(*cmd)(INT16, UINT8 * const []); /* Implementation function	*/
-	UINT8		*usage;		/* Usage message	(short)	*/
+    uint8_t	    *name;		/* Command Name			*/
+	uint8_t maxargs;		/* maximum number of arguments	*/
+	uint8_t repeatable;		/* autorepeat allowed?		*/
+	int16_t (*cmd)(int16_t, uint8_t *const[]);	 /* Implementation function	*/
+	uint8_t *usage;								 /* Usage message	(short)	*/
 }cmd_tbl_t;
 
 //-----------------------------------------------------------------------------
 // Variables et Fonctions partagees
 //-----------------------------------------------------------------------------
-cmd_tbl_t *CMD_find_cmd (const UINT8 *cmd);
-
+cmd_tbl_t *CMD_find_cmd(const uint8_t *cmd);
 
 //-----------------------------------------------------------------------------
 // Ex�cution des commandes
 //-----------------------------------------------------------------------------
-INT16 CMD_process(INT16 argc, UINT8 * argv[],INT16 *repeatable);
+int16_t CMD_process(int16_t argc, uint8_t *argv[], int16_t *repeatable);
 
 //-----------------------------------------------------------------------------
 // Listes des commandes
 //-----------------------------------------------------------------------------
-INT16	TASK_list 	 (INT16 argc, UINT8 * const argv[]);
-INT16	CPU_reset 	 (INT16 argc, UINT8 * const argv[]);
-INT16 CONS_listCmd (INT16 argc, UINT8 * const argv[]);
-INT16 WIFI_cmd (INT16 argc, UINT8 * const argv[]);
-INT16	SENSORS_cmd(INT16 argc , UINT8* const argv[]);
-INT16 MEASURES_cmd(INT16 argc, UINT8 *const argv[]);
+int16_t TASK_list(int16_t argc, uint8_t *const argv[]);
+int16_t CPU_reset(int16_t argc, uint8_t *const argv[]);
+int16_t CONS_listCmd(int16_t argc, uint8_t *const argv[]);
 
 #endif	/* __COMMAND_H */

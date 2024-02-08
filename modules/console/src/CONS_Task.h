@@ -30,8 +30,8 @@
    #define CONS_getc()         uart_getc()
 #endif
 */
-void CONS_print(const UINT8 *pFormat, ...);
-void CONS_printFloat(FLOAT32 value, UINT8 nbDec) ;
+void CONS_print(const uint8_t *pFormat, ...);
+void CONS_printFloat(float value, uint8_t nbDec);
 void CONS_Init(void);
 
 #endif		//--- _TICK_H_
