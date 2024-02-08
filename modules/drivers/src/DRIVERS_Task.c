@@ -33,6 +33,14 @@ __attribute__((weak)) void ARCH_I2C2SendBytes(uint8_t addr, uint8_t *pData, uint
 {
 }
 
+__attribute__((weak)) void ARCH_VI2C1SendBytes(uint8_t addr, uint8_t *pData, uint8_t length, bool stop)
+{
+}
+
+__attribute__((weak)) void ARCH_Pwm1SetDutyCycle(float percent)
+{
+}
+
 //-----------------------------------------------------------------------------
 // FONCTION    : _Init
 //
@@ -72,9 +80,9 @@ static void _Run(void)
     s_MSG_I2C sMsgVI2c;
     if (YAUS_msgGetNbElement(YAUS_QUEUE_VI2C1_TX_HANDLE) > 0)
     {
-        if (YAUS_msgRead(YAUS_QUEUE_VI2C1_TX_HANDLE, &sMsgI2c))
+        if (YAUS_msgRead(YAUS_QUEUE_VI2C1_TX_HANDLE, &sMsgVI2c))
         {
-            //LLVI2C_SendBytes(LL_VI2C1, sMsgI2c.addr, &sMsgI2c.data, sMsgI2c.length, sMsgI2c.stop);
+            ARCH_VI2C1SendBytes(sMsgVI2c.addr, &sMsgVI2c.data, sMsgVI2c.length, sMsgVI2c.stop);
         }
     }
 
@@ -83,7 +91,7 @@ static void _Run(void)
     {
         if (YAUS_msgRead(YAUS_QUEUE_PWMPB0_TX_HANDLE, &sMsgPwm))
         {
-           // LLPWM_SetDutyCycle(LL_PWM_PB0, sMsgPwm.dutyCycle);
+            ARCH_Pwm1SetDutyCycle(sMsgPwm.dutyCycle);
         }
     }
 }

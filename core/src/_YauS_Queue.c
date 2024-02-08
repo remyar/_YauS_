@@ -63,7 +63,7 @@ uint32_t YAUS_msgSend(uint32_t handle, void *data)
 		{
 			queue[i].handle = handle;
 			queue[i].idx = idx + 1;
-			memcpy(queue[i].data, data, YAUS_MAX_LENGTH_MSG);
+			memcpy(queue[i].data, (uint8_t *)data, YAUS_MAX_LENGTH_MSG);
 			queueInfo.nbQueueIsUsed++;
 			if (queueInfo.nbQueueIsUsed > queueInfo.nbQueueUsedMax)
 				queueInfo.nbQueueUsedMax = queueInfo.nbQueueIsUsed;

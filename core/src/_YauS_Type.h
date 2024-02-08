@@ -92,8 +92,8 @@ typedef struct
 {
     uint8_t addr;
     uint8_t length;
-    uint8_t data[YAUS_MAX_LENGTH_MSG - 3];
     uint8_t stop;
+    uint8_t data[YAUS_MAX_LENGTH_MSG - 3];
 } s_MSG_I2C;
 
 /** VARIABLES ******************************************************/
