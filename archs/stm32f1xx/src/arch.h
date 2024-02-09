@@ -12,6 +12,7 @@
 #include "arch_tick.h"
 #include "arch_i2c.h"
 #include "arch_vi2c.h"
+#include "arch_usb.h"
 
 void ARCH_Init(void);
 

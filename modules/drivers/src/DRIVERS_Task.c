@@ -45,6 +45,10 @@ __attribute__((weak)) void ARCH_AdcProcess(void)
 {
 }
 
+__attribute__((weak)) void CDC_Transmit_FS(uint8_t *Buf, uint16_t Len)
+{
+}
+
 //-----------------------------------------------------------------------------
 // FONCTION    : _Init
 //
@@ -67,11 +71,22 @@ static void _Run(void)
     {
         if (YAUS_msgRead(YAUS_QUEUE_UART1_TX_HANDLE, &uart1Data))
         {
-            for (uint8_t i = 0; i < uart1Data.length ; i++ ){
+            for (uint8_t i = 0; i < uart1Data.length; i++)
+            {
                 ARCH_Uart1SendByte(uart1Data.data[i]);
             }
         }
     }
+
+    s_MSG_USB usbData;
+    if (YAUS_msgGetNbElement(YAUS_QUEUE_USB_TX_HANDLE) > 0)
+    {
+        if (YAUS_msgRead(YAUS_QUEUE_USB_TX_HANDLE, &usbData))
+        {
+            CDC_Transmit_FS(usbData.data, usbData.length);
+        }
+    }
+
     s_MSG_I2C sMsgI2c;
     if (YAUS_msgGetNbElement(YAUS_QUEUE_I2C2_TX_HANDLE) > 0)
     {
@@ -111,4 +126,3 @@ void DRIVERS_Init(void)
 {
     YAUS_TaskCreate("MODULE-Driver", (void *)_Init, (void *)_Run, 1, 0);
 }
-

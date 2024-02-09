@@ -84,6 +84,12 @@ typedef struct
 
 typedef struct
 {
+    uint8_t length;
+    uint8_t data[YAUS_MAX_LENGTH_MSG - 1];
+} s_MSG_USB;
+
+typedef struct
+{
     float dutyCycle;
     float frequence;
 } s_MSG_PWM;

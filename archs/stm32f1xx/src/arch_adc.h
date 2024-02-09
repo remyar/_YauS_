@@ -1,5 +1,5 @@
-#ifndef _LL_ADC_H_
-#define _LL_ADC_H_
+#ifndef _ARCH_ADC_H_
+#define _ARCH_ADC_H_
 
 #include "arch.h"
 

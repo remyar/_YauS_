@@ -171,3 +171,11 @@ void ADC1_2_IRQHandler(void)
 {
     HAL_ADC_IRQHandler(&hadc1);
 }
+
+/**
+ * @brief This function handles USB low priority or CAN RX0 interrupts.
+ */
+void USB_LP_CAN1_RX0_IRQHandler(void)
+{
+    HAL_PCD_IRQHandler(&hpcd_USB_FS);
+}

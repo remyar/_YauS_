@@ -22,9 +22,16 @@ void ARCH_PwmInit(uint32_t periphNum, unsigned long freq, uint32_t flags)
             uint32_t clk = HAL_RCC_GetPCLK1Freq() * 2;
             uint32_t period = clk / freq;
 
+            htim3.Init.Prescaler = 0;
+
+            while (period > 65000 ){
+                htim3.Init.Prescaler++;
+                period /= 2;
+            }
+
             /* USER CODE END TIM3_Init 1 */
             htim3.Instance = TIM3;
-            htim3.Init.Prescaler = 0;
+            
             htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
             htim3.Init.Period = period;
             htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
