@@ -6,7 +6,7 @@ static uint8_t ADC_channels[MAX_ADC];
 static uint8_t ADC_nbChannel = 0;
 static uint8_t ADC_idxChannel = 0;
 static uint32_t ADC_value[MAX_ADC];
-static uint8_t ADC_state = 0;
+static uint8_t ADC_state = ADC_NOT_USED;
 
 bool _allreadyConfigured(uint8_t pin)
 {
@@ -113,6 +113,8 @@ void ARCH_AdcProcess(void)
 
     switch (ADC_state)
     {
+    case (ADC_NOT_USED):
+        break;
     case (ADC_STATE_INIT):
         sConfig.Channel = _getChannelFromPeriphNum(ADC_channels[ADC_idxChannel]);
         sConfig.Rank = 1;

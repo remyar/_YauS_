@@ -7,7 +7,8 @@ extern ADC_HandleTypeDef hadc1;
 
 enum
 {
-    ADC_STATE_INIT = 0,
+    ADC_NOT_USED = 0,
+    ADC_STATE_INIT,
     ADC_STATE_START,
     ADC_STATE_WAIT_END,
     ADC_STATE_FINISH,
