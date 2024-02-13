@@ -8,6 +8,7 @@
 #include "arch_it.h"
 #include "arch_adc.h"
 #include "arch_uart.h"
+#include "arch_rs485.h"
 #include "arch_pwm.h"
 #include "arch_tick.h"
 #include "arch_i2c.h"

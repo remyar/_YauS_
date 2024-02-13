@@ -114,6 +114,18 @@ static void _Run(void)
         }
     }
 
+    s_MSG_UART rs4851Data;
+    if (YAUS_msgGetNbElement(YAUS_QUEUE_RS4851_TX_HANDLE) > 0)
+    {
+        if (YAUS_msgRead(YAUS_QUEUE_RS4851_TX_HANDLE, &rs4851Data))
+        {
+            for (uint8_t i = 0; i < rs4851Data.length; i++)
+            {
+                ARCH_RS4851SendByteSync(rs4851Data.data[i]);
+            }
+        }
+    }
+
     ARCH_AdcProcess();
 }
 

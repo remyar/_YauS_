@@ -43,6 +43,13 @@
 
 /** MACROS *********************************************************/
 
+typedef union //--- u_UINT32
+{
+    uint8_t tab[sizeof(uint32_t)];
+    uint32_t val;
+    int32_t sVal;
+} u_uint32_t;
+
 typedef bool (*PTR_TASK_INIT_FUNC)(void);
 typedef void (*PTR_TASK_RUN_FUNC)(void);
 typedef void (*PTR_LL_CALLBACK_FUNC)(unsigned char, unsigned char *, unsigned char);

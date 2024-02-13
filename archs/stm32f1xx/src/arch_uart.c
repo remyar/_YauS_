@@ -2,6 +2,7 @@
 
 UART_HandleTypeDef huart1;
 static uint8_t dataHuart1;
+static bool useRs485 = false;
 
 void ARCH_UartInit(uint32_t uartNum, unsigned long baud, uint32_t flags)
 {
@@ -71,14 +72,12 @@ void ARCH_Uart1Init(uint32_t speed, uint32_t flags)
 
 void ARCH_UartSendByteSync(uint32_t uartNum, uint8_t data)
 {
-    if (uartNum == (uint32_t)USART1)
-    {
-        HAL_UART_Transmit(&huart1, &data, 1, 10);
-    }
-    else
-    {
-        Error_Handler();
-    }
+    HAL_UART_Transmit(&huart1, &data, 1, 10);
+}
+
+void ARCH_Uart1SendByteSync(uint8_t data)
+{
+    ARCH_UartSendByteSync(USART1 , data);
 }
 
 void ARCH_UartSendByte(uint32_t uartNum, uint8_t data)
@@ -100,6 +99,10 @@ void ARCH_Uart1SendByte(uint8_t data)
     ARCH_UartSendByte(USART1, data);
 }
 
+void ARCH_Uart1UseRs485(bool value){
+    useRs485 = value;
+}
+
 //-- rx received byte callback
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
@@ -108,7 +111,15 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
         s_MSG_UART uart1Data;
         uart1Data.length = 1;
         uart1Data.data[0] = dataHuart1;
-        YAUS_msgSend(YAUS_QUEUE_UART1_RX_HANDLE, &uart1Data);
+
+        if (useRs485 == false)
+        {
+            YAUS_msgSend(YAUS_QUEUE_UART1_RX_HANDLE, &uart1Data);
+        }
+        else
+        {
+            YAUS_msgSend(YAUS_QUEUE_RS4851_RX_HANDLE, &uart1Data);
+        }
         HAL_UART_Receive_IT(huart, &dataHuart1, 1);
     }
 }
