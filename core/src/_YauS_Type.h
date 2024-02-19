@@ -64,6 +64,8 @@ typedef enum
     END_RUN_STATUS
 } e_STATUS;
 
+#define KEYBOARD_EVENT_TYPE (1 << 0)
+
 typedef struct
 {
     uint8_t name[MAX_CHARS_STRING]; //-- nom de la tache ( pour debug )
@@ -109,6 +111,18 @@ typedef struct
     uint8_t data[YAUS_MAX_LENGTH_MSG - 3];
 } s_MSG_I2C;
 
+typedef struct
+{
+    uint32_t taskId;
+    uint32_t eventType;
+    uint8_t eventData[YAUS_MAX_LENGTH_MSG - 8];
+} s_MSG_EVENT;
+
+typedef struct
+{
+    bool longPress;
+    uint16_t bpPressed;
+} s_EVENT_BP;
 /** VARIABLES ******************************************************/
 
 /** DECLARATIONS ***************************************************/

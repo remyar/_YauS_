@@ -19,6 +19,7 @@
 enum
 {
 	YAUS_QUEUE_NO_HANDLE = 0, //- NULL
+	YAUS_QUEUE_EVENT_HANDLE,
 	YAUS_QUEUE_USB_RX_HANDLE,
 	YAUS_QUEUE_USB_TX_HANDLE,
 	YAUS_QUEUE_UART1_RX_HANDLE,
@@ -61,4 +62,5 @@ void YAUS_msgInit(void);
 uint32_t YAUS_msgSend(uint32_t handle, void *data);
 uint32_t YAUS_msgGetNbElement(uint32_t handle);
 uint32_t YAUS_msgRead(uint32_t handle, void *data);
+uint32_t YAUS_msgPeek(uint32_t handle, void *data);
 #endif //--- EVENT_H

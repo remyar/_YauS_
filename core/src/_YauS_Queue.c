@@ -114,6 +114,36 @@ uint32_t YAUS_msgGetNbElement(uint32_t handle)
 	return nb;
 }
 
+uint32_t YAUS_msgPeek(uint32_t handle, void *data)
+{
+	uint32_t returnLen = 0;
+	uint32_t i, idx;
+
+	if (handle != YAUS_QUEUE_NO_HANDLE)
+	{
+		idx = 0xFFFFFFFF;
+		/* on cherche un idx du message en cours */
+		for (i = 0; i < YAUS_MAX_MSG; i++)
+		{
+			if (queue[i].handle == handle)
+			{
+				if (idx > queue[i].idx)
+					idx = queue[i].idx;
+			}
+		}
+		for (i = 0; i < YAUS_MAX_MSG; i++)
+		{
+			if ((queue[i].handle == handle) && (queue[i].idx == idx))
+			{
+				memcpy(data, queue[i].data, YAUS_MAX_LENGTH_MSG);
+				returnLen = YAUS_MAX_LENGTH_MSG;
+				break;
+			}
+		}
+	}
+	return returnLen;
+}
+
 //------------------------------------------------------------------------------
 // FONCTION    : QUEUE_Send
 //
