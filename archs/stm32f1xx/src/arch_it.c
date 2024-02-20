@@ -150,6 +150,16 @@ void USART1_IRQHandler(void)
     HAL_UART_IRQHandler(&huart1);
 }
 
+void USART2_IRQHandler(void)
+{
+    HAL_UART_IRQHandler(&huart2);
+}
+
+void USART3_IRQHandler(void)
+{
+    HAL_UART_IRQHandler(&huart3);
+}
+
 /**
  * @brief This function handles I2C2 event interrupt.
  */

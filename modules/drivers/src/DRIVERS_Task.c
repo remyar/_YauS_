@@ -28,6 +28,12 @@
 __attribute__((weak)) void ARCH_Uart1SendByte(uint8_t data)
 {
 }
+__attribute__((weak)) void ARCH_Uart2SendByte(uint8_t data)
+{
+}
+__attribute__((weak)) void ARCH_Uart3SendByte(uint8_t data)
+{
+}
 
 __attribute__((weak)) void ARCH_I2C2SendBytes(uint8_t addr, uint8_t *pData, uint8_t length)
 {
@@ -74,6 +80,30 @@ static void _Run(void)
             for (uint8_t i = 0; i < uart1Data.length; i++)
             {
                 ARCH_Uart1SendByte(uart1Data.data[i]);
+            }
+        }
+    }
+
+    s_MSG_UART uart2Data;
+    if (YAUS_msgGetNbElement(YAUS_QUEUE_UART2_TX_HANDLE) > 0)
+    {
+        if (YAUS_msgRead(YAUS_QUEUE_UART2_TX_HANDLE, &uart2Data))
+        {
+            for (uint8_t i = 0; i < uart2Data.length; i++)
+            {
+                ARCH_Uart2SendByte(uart2Data.data[i]);
+            }
+        }
+    }
+
+    s_MSG_UART uart3Data;
+    if (YAUS_msgGetNbElement(YAUS_QUEUE_UART3_TX_HANDLE) > 0)
+    {
+        if (YAUS_msgRead(YAUS_QUEUE_UART3_TX_HANDLE, &uart3Data))
+        {
+            for (uint8_t i = 0; i < uart3Data.length; i++)
+            {
+                ARCH_Uart3SendByte(uart3Data.data[i]);
             }
         }
     }
