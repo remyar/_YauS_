@@ -26,6 +26,9 @@ void ARCH_UartInit(USART_TypeDef *uartNum, unsigned long baud, uint32_t flags)
             if (__HAL_RCC_GPIOB_IS_CLK_DISABLED())
                 __HAL_RCC_GPIOB_CLK_ENABLE();
 
+            if (__HAL_RCC_AFIO_IS_CLK_DISABLED())
+                __HAL_RCC_AFIO_CLK_ENABLE();
+                
             /**USART1 GPIO Configuration
             PB6     ------> USART1_TX
             PB7     ------> USART1_RX
