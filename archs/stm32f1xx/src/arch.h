@@ -15,6 +15,10 @@
 #include "arch_vi2c.h"
 #include "arch_usb.h"
 
+#define USE_ALTERNATE_FUNCTION (1 << 0)
+
+#define Has_flag(X, Y) (((X & Y) == Y) ? true : false)
+
 void ARCH_Init(void);
 
 #endif
