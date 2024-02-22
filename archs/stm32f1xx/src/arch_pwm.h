@@ -3,7 +3,8 @@
 
 #include "arch.h"
 
-enum{
+enum
+{
     PWMB0,
     PWMB1,
     PWM_MAX
@@ -14,5 +15,8 @@ void ARCH_PwmSetDutyCycle(uint8_t periphNum, float percent);
 
 void ARCH_Pwm1Init(unsigned long freq, uint32_t flags);
 void ARCH_Pwm1SetDutyCycle(float percent);
+
+void ARCH_Pwm2Init(unsigned long freq, uint32_t flags);
+void ARCH_Pwm2SetDutyCycle(float percent);
 
 #endif
