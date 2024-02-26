@@ -110,7 +110,7 @@ void ARCH_PwmInit(uint32_t periphNum, unsigned long freq, uint32_t flags)
             HardFault_Handler();
         }
         sConfigOC.OCMode = TIM_OCMODE_PWM1;
-        sConfigOC.Pulse = 32768;
+        sConfigOC.Pulse = 0;
         sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
         sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
         if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_4) != HAL_OK)

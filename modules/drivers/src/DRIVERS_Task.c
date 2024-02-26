@@ -55,12 +55,25 @@ __attribute__((weak)) void CDC_Transmit_FS(uint8_t *Buf, uint16_t Len)
 {
 }
 
+__attribute__((weak)) uint8_t ARCH_Spi1SendByte(uint8_t data)
+{
+}
+
+__attribute__((weak)) void ARCH_RS4851SendByteSync(uint8_t data)
+{
+}
+
+__attribute__((weak)) void ARCH_VSPI1SendBytes(uint8_t *Buf, uint16_t Len)
+{
+}
+
 //-----------------------------------------------------------------------------
 // FONCTION    : _Init
 //
 // DESCRIPTION : Init de la tache
 //-----------------------------------------------------------------------------
-static bool _Init(void)
+static bool
+_Init(void)
 {
     return true;
 }
@@ -153,6 +166,29 @@ static void _Run(void)
             {
                 ARCH_RS4851SendByteSync(rs4851Data.data[i]);
             }
+        }
+    }
+
+    s_MSG_SPI sMsgSpi1;
+    if (YAUS_msgGetNbElement(YAUS_QUEUE_SPI1_TX_HANDLE) > 0)
+    {
+        if (YAUS_msgRead(YAUS_QUEUE_SPI1_TX_HANDLE, &sMsgSpi1))
+        {
+            for (uint8_t i = 0; i < sMsgSpi1.length; i++)
+            {
+                sMsgSpi1.data[i] = ARCH_Spi1SendByte(sMsgSpi1.data[i]);
+            }
+            YAUS_msgSend(YAUS_QUEUE_SPI1_RX_HANDLE, &sMsgSpi1);
+        }
+    }
+
+    s_MSG_SPI sMsgVSpi1;
+    if (YAUS_msgGetNbElement(YAUS_QUEUE_VSPI1_TX_HANDLE) > 0)
+    {
+        if (YAUS_msgRead(YAUS_QUEUE_VSPI1_TX_HANDLE, &sMsgVSpi1))
+        {
+            ARCH_VSPI1SendBytes(sMsgVSpi1.data, sMsgVSpi1.length);
+            YAUS_msgSend(YAUS_QUEUE_VSPI1_RX_HANDLE, &sMsgVSpi1);
         }
     }
 

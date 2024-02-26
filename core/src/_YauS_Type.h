@@ -113,6 +113,12 @@ typedef struct
 
 typedef struct
 {
+    uint8_t length;
+    uint8_t data[YAUS_MAX_LENGTH_MSG - 1];
+} s_MSG_SPI;
+
+typedef struct
+{
     uint32_t taskId;
     uint32_t eventType;
     uint8_t eventData[YAUS_MAX_LENGTH_MSG - 8];

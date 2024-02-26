@@ -14,6 +14,8 @@
 #include "arch_i2c.h"
 #include "arch_vi2c.h"
 #include "arch_usb.h"
+#include "arch_spi.h"
+#include "arch_vspi.h"
 
 #define USE_ALTERNATE_FUNCTION (1 << 0)
 

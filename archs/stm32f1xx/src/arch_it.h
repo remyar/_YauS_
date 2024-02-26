@@ -7,6 +7,7 @@
 
 #include "arch_uart.h"
 #include "arch_i2c.h"
+#include "arch_spi.h"
 
 extern PCD_HandleTypeDef hpcd_USB_FS;
 
