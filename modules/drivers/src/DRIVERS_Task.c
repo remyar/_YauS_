@@ -25,6 +25,18 @@
 //-----------------------------------------------------------------------------
 // Variables globales
 //-----------------------------------------------------------------------------
+__attribute__((weak)) bool ARCH_Uart1Available(void)
+{
+}
+
+__attribute__((weak)) bool ARCH_GetUart1UseRs485(void)
+{
+}
+
+__attribute__((weak)) uint8_t ARCH_Uart1Read(void)
+{
+}
+
 __attribute__((weak)) void ARCH_Uart1SendByte(uint8_t data)
 {
 }
@@ -72,8 +84,7 @@ __attribute__((weak)) void ARCH_VSPI1SendBytes(uint8_t *Buf, uint16_t Len)
 //
 // DESCRIPTION : Init de la tache
 //-----------------------------------------------------------------------------
-static bool
-_Init(void)
+static bool _Init(void)
 {
     return true;
 }
@@ -86,6 +97,13 @@ _Init(void)
 static void _Run(void)
 {
     s_MSG_UART uart1Data;
+    while (ARCH_Uart1Available() > 0)
+    {
+        uart1Data.length = 1;
+        uart1Data.data[0] = ARCH_Uart1Read();
+        YAUS_msgSend(ARCH_GetUart1UseRs485() ? YAUS_QUEUE_RS4851_RX_HANDLE : YAUS_QUEUE_UART1_RX_HANDLE, &uart1Data);
+    }
+
     if (YAUS_msgGetNbElement(YAUS_QUEUE_UART1_TX_HANDLE) > 0)
     {
         if (YAUS_msgRead(YAUS_QUEUE_UART1_TX_HANDLE, &uart1Data))

@@ -174,7 +174,7 @@ void ARCH_VI2CInit(uint8_t periphNum, uint32_t portScl, uint32_t pinScl, uint32_
         __HAL_RCC_GPIOB_CLK_ENABLE();
     if (__HAL_RCC_GPIOA_IS_CLK_DISABLED())
         __HAL_RCC_GPIOA_CLK_ENABLE();
-        
+
     switch (periphNum)
     {
     case (VI2C1):
@@ -193,7 +193,7 @@ void ARCH_VI2CInit(uint8_t periphNum, uint32_t portScl, uint32_t pinScl, uint32_
         HAL_GPIO_Init(sclVI2C1PinStruct.GPIO_PortStruct, &sclVI2C1PinStruct.GPIO_PinStruct);
 
         _stop(VI2C1);
-         break;
+        break;
     }
 }
 

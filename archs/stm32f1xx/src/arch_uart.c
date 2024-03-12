@@ -10,6 +10,9 @@ static bool useRs4851 = false;
 static bool useRs4852 = false;
 static bool useRs4853 = false;
 
+static uint8_t _Uart1RxBuffer[64];
+static uint8_t _Uart1Idx = 0;
+
 void ARCH_UartInit(USART_TypeDef *uartNum, unsigned long baud, uint32_t flags)
 {
     UART_HandleTypeDef *huart;
@@ -28,7 +31,7 @@ void ARCH_UartInit(USART_TypeDef *uartNum, unsigned long baud, uint32_t flags)
 
             if (__HAL_RCC_AFIO_IS_CLK_DISABLED())
                 __HAL_RCC_AFIO_CLK_ENABLE();
-                
+
             /**USART1 GPIO Configuration
             PB6     ------> USART1_TX
             PB7     ------> USART1_RX
@@ -65,6 +68,7 @@ void ARCH_UartInit(USART_TypeDef *uartNum, unsigned long baud, uint32_t flags)
             HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
         }
 
+        _Uart1Idx = 0;
         huart = &huart1;
     }
     else if (uartNum == USART2)
@@ -212,6 +216,10 @@ void ARCH_Uart3SendByte(uint8_t data)
     ARCH_UartSendByte(USART3, data);
 }
 
+bool ARCH_GetUart1UseRs485(void)
+{
+    return useRs4851;
+}
 void ARCH_Uart1UseRs485(bool value)
 {
     useRs4851 = value;
@@ -227,11 +235,30 @@ void ARCH_Uart3UseRs485(bool value)
     useRs4853 = value;
 }
 
+bool ARCH_Uart1Available(void)
+{
+    return _Uart1Idx > 0;
+}
+
+uint8_t ARCH_Uart1Read(void)
+{
+    uint8_t value = _Uart1RxBuffer[0];
+    for (int i = 0; i < (sizeof(_Uart1RxBuffer) - 1); i++)
+    {
+        _Uart1RxBuffer[i] = _Uart1RxBuffer[i + 1];
+    }
+    _Uart1Idx--;
+    return value;
+}
+
 //-- rx received byte callback
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
     if (huart->Instance == USART1)
     {
+        _Uart1RxBuffer[_Uart1Idx] = dataHuart1;
+        _Uart1Idx++;
+        /*
         s_MSG_UART uartData;
         uartData.length = 1;
         uartData.data[0] = dataHuart1;
@@ -243,7 +270,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
         else
         {
             YAUS_msgSend(YAUS_QUEUE_RS4851_RX_HANDLE, &uartData);
-        }
+        }*/
         HAL_UART_Receive_IT(huart, &dataHuart1, 1);
     }
     if (huart->Instance == USART2)

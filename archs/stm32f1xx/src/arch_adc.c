@@ -119,12 +119,10 @@ void ARCH_AdcProcess(void)
         sConfig.Channel = _getChannelFromPeriphNum(ADC_channels[ADC_idxChannel]);
         sConfig.Rank = 1;
         sConfig.SamplingTime = ADC_SAMPLETIME_28CYCLES_5;
-        if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+        if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) == HAL_OK)
         {
-            HardFault_Handler();
+            ADC_state = ADC_STATE_START;
         }
-
-        ADC_state = ADC_STATE_START;
         break;
     case (ADC_STATE_START):
         HAL_ADC_Start(&hadc1);

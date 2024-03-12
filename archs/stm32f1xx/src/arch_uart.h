@@ -15,6 +15,8 @@ void ARCH_Uart1UseRs485(bool value);
 void ARCH_Uart2UseRs485(bool value);
 void ARCH_Uart3UseRs485(bool value);
 
+bool ARCH_GetUart1UseRs485(void);
+
 void ARCH_Uart1Init(unsigned long baud, uint32_t flags);
 void ARCH_Uart2Init(unsigned long baud, uint32_t flags);
 void ARCH_Uart3Init(unsigned long baud, uint32_t flags);
@@ -26,5 +28,9 @@ void ARCH_Uart3SendByte(uint8_t data);
 void ARCH_Uart1SendByteSync(uint8_t data);
 void ARCH_Uart2SendByteSync(uint8_t data);
 void ARCH_Uart3SendByteSync(uint8_t data);
+
+bool ARCH_Uart1Available(void);
+uint8_t ARCH_Uart1Read(void);
+
 
 #endif
