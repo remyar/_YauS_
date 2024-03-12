@@ -1,5 +1,7 @@
 #include "arch_it.h"
 
+uint32_t numItFlag = NO_IT;
+
 /**
  * @brief This function handles Non maskable interrupt.
  */
@@ -138,7 +140,7 @@ void SysTick_Handler(void)
 
     /* USER CODE END SysTick_IRQn 0 */
     HAL_IncTick();
-    
+
     /* USER CODE BEGIN SysTick_IRQn 1 */
     YAUS_HandleIT();
 
@@ -175,7 +177,6 @@ void I2C2_ER_IRQHandler(void)
 {
     HAL_I2C_ER_IRQHandler(&hi2c2);
 }
-
 
 void ADC1_2_IRQHandler(void)
 {

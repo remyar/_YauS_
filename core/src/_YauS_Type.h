@@ -50,6 +50,29 @@ typedef union //--- u_UINT32
     int32_t sVal;
 } u_uint32_t;
 
+typedef union //--- u_UINT32
+{
+    uint8_t tab[sizeof(uint16_t)];
+    uint16_t val;
+    int16_t sVal;
+} u_uint16_t;
+
+typedef union //--- u_TAB_FLOAT32
+{
+    uint8_t tab[sizeof(float)];
+    uint32_t valU32;
+    int32_t valS32;
+    float val;
+} u_TAB_FLOAT32;
+
+typedef union //--- u_TAB_FLOAT32
+{
+    uint8_t tab[sizeof(float)];
+    uint32_t valU32;
+    int32_t valS32;
+    float val;
+} u_float;
+
 typedef bool (*PTR_TASK_INIT_FUNC)(void);
 typedef void (*PTR_TASK_RUN_FUNC)(void);
 typedef void (*PTR_LL_CALLBACK_FUNC)(unsigned char, unsigned char *, unsigned char);

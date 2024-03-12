@@ -255,37 +255,44 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
  * @param  Len: Number of data received (in bytes)
  * @retval Result of the operation: USBD_OK if all operations are OK else USBD_FAIL
  */
+static uint8_t _usbRxBuffer[32];
+static uint16_t _usbRxIdx = 0;
+static uint16_t _usbReadIdx = 0;
+
+bool ARCH_UsbAvailable(void)
+{
+  return _usbRxIdx != _usbReadIdx;
+}
+
+uint8_t ARCH_UsbRead(void)
+{
+  uint8_t val8 = _usbRxBuffer[_usbReadIdx];
+  _usbReadIdx++;
+  if (_usbReadIdx >= sizeof(_usbRxBuffer))
+  {
+    _usbReadIdx = 0;
+  }
+  return val8;
+}
+
 static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
 {
+  /* USER CODE BEGIN 6 */
   uint16_t size = (uint16_t)(*Len);
-  uint16_t packetSize;
-  uint16_t offset = 0;
-  s_MSG_USB sMsgUsb;
 
-  do
+  for (uint16_t i = 0; i < size; i++)
   {
-    packetSize = size;
-    if (size >= sizeof(sMsgUsb.data))
+    _usbRxBuffer[_usbRxIdx] = Buf[i];
+    _usbRxIdx++;
+    if (_usbRxIdx >= sizeof(_usbRxBuffer))
     {
-      packetSize = sizeof(sMsgUsb.data);
+      _usbRxIdx = 0;
     }
-
-    sMsgUsb.length = 0;
-    for (uint8_t i = 0; i < packetSize; i++)
-    {
-      sMsgUsb.data[i] = Buf[i + offset];
-      sMsgUsb.length++;
-      size--;
-    }
-    offset += packetSize;
-
-    YAUS_msgSend(YAUS_QUEUE_USB_RX_HANDLE, &sMsgUsb);
-
-  } while (size > 0);
-
+  }
   USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
   USBD_CDC_ReceivePacket(&hUsbDeviceFS);
   return (USBD_OK);
+  /* USER CODE END 6 */
 }
 
 /**
@@ -301,26 +308,17 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
  */
 uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len)
 {
-  uint32_t tick = HAL_GetTick() + 10;
-
   uint8_t result = USBD_OK;
   /* USER CODE BEGIN 7 */
   USBD_CDC_HandleTypeDef *hcdc = (USBD_CDC_HandleTypeDef *)hUsbDeviceFS.pClassData;
-  while (hcdc->TxState != 0)
+  if (hcdc->TxState != 0)
   {
-    if (HAL_GetTick() > tick)
-    {
-      result = USBD_BUSY;
-      break;
-    }
+    return USBD_BUSY;
   }
 
-  if (result == USBD_OK)
-  {
-    memcpy(UserTxBufferFS, Buf, Len);
-    USBD_CDC_SetTxBuffer(&hUsbDeviceFS, UserTxBufferFS, Len);
-    result = USBD_CDC_TransmitPacket(&hUsbDeviceFS);
-  }
+  memcpy(UserTxBufferFS, Buf, Len);
+  USBD_CDC_SetTxBuffer(&hUsbDeviceFS, UserTxBufferFS, Len);
+  result = USBD_CDC_TransmitPacket(&hUsbDeviceFS);
   /* USER CODE END 7 */
   return result;
 }

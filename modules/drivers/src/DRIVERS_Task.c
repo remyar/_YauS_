@@ -27,14 +27,26 @@
 //-----------------------------------------------------------------------------
 __attribute__((weak)) bool ARCH_Uart1Available(void)
 {
+    return false;
 }
 
 __attribute__((weak)) bool ARCH_GetUart1UseRs485(void)
 {
+    return false;
 }
 
 __attribute__((weak)) uint8_t ARCH_Uart1Read(void)
 {
+    return 0;
+}
+
+__attribute__((weak)) bool ARCH_UsbAvailable(void)
+{
+    return false;
+}
+__attribute__((weak)) uint8_t ARCH_UsbRead(void)
+{
+    return 0;
 }
 
 __attribute__((weak)) void ARCH_Uart1SendByte(uint8_t data)
@@ -63,12 +75,14 @@ __attribute__((weak)) void ARCH_AdcProcess(void)
 {
 }
 
-__attribute__((weak)) void CDC_Transmit_FS(uint8_t *Buf, uint16_t Len)
+__attribute__((weak)) uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len)
 {
+    return 0;
 }
 
 __attribute__((weak)) uint8_t ARCH_Spi1SendByte(uint8_t data)
 {
+    return 0;
 }
 
 __attribute__((weak)) void ARCH_RS4851SendByteSync(uint8_t data)
@@ -139,12 +153,33 @@ static void _Run(void)
         }
     }
 
-    s_MSG_USB usbData;
+    s_MSG_USB usbDataRx;
+    if (ARCH_UsbAvailable() == true)
+    {
+        usbDataRx.length = 0;
+        while (ARCH_UsbAvailable() == true)
+        {
+            usbDataRx.data[usbDataRx.length] = ARCH_UsbRead();
+            usbDataRx.length++;
+            if (usbDataRx.length >= sizeof(usbDataRx.data)){
+                break;
+            }
+        }
+        if (usbDataRx.length != 0 ){
+            YAUS_msgSend(YAUS_QUEUE_USB_RX_HANDLE, &usbDataRx);
+        }
+    }
+
+
+    s_MSG_USB usbDataTx;
     if (YAUS_msgGetNbElement(YAUS_QUEUE_USB_TX_HANDLE) > 0)
     {
-        if (YAUS_msgRead(YAUS_QUEUE_USB_TX_HANDLE, &usbData))
+        if (YAUS_msgPeek(YAUS_QUEUE_USB_TX_HANDLE, &usbDataTx))
         {
-            CDC_Transmit_FS(usbData.data, usbData.length);
+            if (CDC_Transmit_FS(usbDataTx.data, usbDataTx.length) == 0)
+            {
+                YAUS_msgRead(YAUS_QUEUE_USB_TX_HANDLE, &usbDataTx);
+            }
         }
     }
 
