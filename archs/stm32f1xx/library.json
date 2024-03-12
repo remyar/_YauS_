@@ -1,6 +1,6 @@
 {
     "name": "YauS-stm32f1xx",
-    "version": "0.0.24",
+    "version": "0.0.25",
     "description": "YauS-stm32f1xx is low level driver for stm32f1xx",
     "keywords": "Scheduler YauS stm32f1xx",
     "repository": {
