@@ -11,7 +11,8 @@ static bool useRs4852 = false;
 static bool useRs4853 = false;
 
 static uint8_t _Uart1RxBuffer[64];
-static uint8_t _Uart1Idx = 0;
+static uint16_t _Uart1RxIdx = 0;
+static uint16_t _Uart1ReadIdx = 0;
 
 void ARCH_UartInit(USART_TypeDef *uartNum, unsigned long baud, uint32_t flags)
 {
@@ -68,7 +69,7 @@ void ARCH_UartInit(USART_TypeDef *uartNum, unsigned long baud, uint32_t flags)
             HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
         }
 
-        _Uart1Idx = 0;
+        _Uart1RxIdx = 0;
         huart = &huart1;
     }
     else if (uartNum == USART2)
@@ -237,18 +238,18 @@ void ARCH_Uart3UseRs485(bool value)
 
 bool ARCH_Uart1Available(void)
 {
-    return _Uart1Idx > 0;
+    return _Uart1RxIdx != _Uart1ReadIdx;
 }
 
 uint8_t ARCH_Uart1Read(void)
 {
-    uint8_t value = _Uart1RxBuffer[0];
-    for (int i = 0; i < (sizeof(_Uart1RxBuffer) - 1); i++)
+    uint8_t val8 = _Uart1RxBuffer[_Uart1ReadIdx];
+    _Uart1ReadIdx++;
+    if (_Uart1ReadIdx >= sizeof(_Uart1RxBuffer))
     {
-        _Uart1RxBuffer[i] = _Uart1RxBuffer[i + 1];
+        _Uart1ReadIdx = 0;
     }
-    _Uart1Idx--;
-    return value;
+    return val8;
 }
 
 //-- rx received byte callback
@@ -256,21 +257,12 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
     if (huart->Instance == USART1)
     {
-        _Uart1RxBuffer[_Uart1Idx] = dataHuart1;
-        _Uart1Idx++;
-        /*
-        s_MSG_UART uartData;
-        uartData.length = 1;
-        uartData.data[0] = dataHuart1;
-
-        if (useRs4851 == false)
+        _Uart1RxBuffer[_Uart1RxIdx] = dataHuart1;
+        _Uart1RxIdx++;
+        if (_Uart1RxIdx >= sizeof(_Uart1RxBuffer))
         {
-            YAUS_msgSend(YAUS_QUEUE_UART1_RX_HANDLE, &uartData);
+            _Uart1RxIdx = 0;
         }
-        else
-        {
-            YAUS_msgSend(YAUS_QUEUE_RS4851_RX_HANDLE, &uartData);
-        }*/
         HAL_UART_Receive_IT(huart, &dataHuart1, 1);
     }
     if (huart->Instance == USART2)

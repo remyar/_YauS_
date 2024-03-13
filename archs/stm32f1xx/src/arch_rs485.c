@@ -23,7 +23,8 @@ void ARCH_RS4851Init(uint32_t speed, GPIO_TypeDef *portDe, uint32_t pinDe, uint3
     rs4851PinStruct.GPIO_PinStruct.Speed = GPIO_SPEED_FREQ_HIGH;
 
     HAL_GPIO_Init(rs4851PinStruct.GPIO_PortStruct, &rs4851PinStruct.GPIO_PinStruct);
-
+    HAL_GPIO_WriteFastPin(rs4851PinStruct.GPIO_PortStruct, rs4851PinStruct.GPIO_PinStruct.Pin, GPIO_PIN_RESET);
+    
     ARCH_Uart1Init(speed, flags);
     ARCH_Uart1UseRs485(true);
 }
