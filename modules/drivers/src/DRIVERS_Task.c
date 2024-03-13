@@ -111,11 +111,22 @@ static bool _Init(void)
 static void _Run(void)
 {
     s_MSG_UART uart1Data;
-    while (ARCH_Uart1Available() > 0)
+    if (ARCH_Uart1Available() == true)
     {
-        uart1Data.length = 1;
-        uart1Data.data[0] = ARCH_Uart1Read();
-        YAUS_msgSend(ARCH_GetUart1UseRs485() ? YAUS_QUEUE_RS4851_RX_HANDLE : YAUS_QUEUE_UART1_RX_HANDLE, &uart1Data);
+        uart1Data.length = 0;
+        while (ARCH_Uart1Available() > 0)
+        {
+            uart1Data.data[uart1Data.length] = ARCH_Uart1Read();
+            uart1Data.length++;
+            if (uart1Data.length >= sizeof(uart1Data.data))
+            {
+                break;
+            }
+        }
+        if (uart1Data.length != 0)
+        {
+            YAUS_msgSend(ARCH_GetUart1UseRs485() ? YAUS_QUEUE_RS4851_RX_HANDLE : YAUS_QUEUE_UART1_RX_HANDLE, &uart1Data);
+        }
     }
 
     if (YAUS_msgGetNbElement(YAUS_QUEUE_UART1_TX_HANDLE) > 0)
@@ -161,15 +172,16 @@ static void _Run(void)
         {
             usbDataRx.data[usbDataRx.length] = ARCH_UsbRead();
             usbDataRx.length++;
-            if (usbDataRx.length >= sizeof(usbDataRx.data)){
+            if (usbDataRx.length >= sizeof(usbDataRx.data))
+            {
                 break;
             }
         }
-        if (usbDataRx.length != 0 ){
+        if (usbDataRx.length != 0)
+        {
             YAUS_msgSend(YAUS_QUEUE_USB_RX_HANDLE, &usbDataRx);
         }
     }
-
 
     s_MSG_USB usbDataTx;
     if (YAUS_msgGetNbElement(YAUS_QUEUE_USB_TX_HANDLE) > 0)
