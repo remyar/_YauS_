@@ -75,20 +75,13 @@ uint32_t YAUS_msgSend(uint32_t handle, void *data)
 	if (queueInfo.nbQueueIsUsed >= (YAUS_MAX_MSG - 4))
 	{
 		//-- si on arrive ici alors c'est que la queue et presque pleine
-#ifdef YAUS_USE_MODULE_DRIVERS
-		DRIVERS_Process();
-#endif
 	}
 
 	if (queueInfo.nbQueueIsUsed >= YAUS_MAX_MSG)
 	{
-#ifdef YAUS_USE_MODULE_DRIVERS
-		DRIVERS_Process();
-#else
 		//-- si on arrive ici alors c'est que la queue et pleine
 		while (1)
 			;
-#endif
 	}
 	return returnVal;
 }
