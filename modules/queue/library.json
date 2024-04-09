@@ -1,6 +1,6 @@
 {
     "name": "YauS-queue",
-    "version": "0.0.01",
+    "version": "0.0.1",
     "description": "YauS-queue is a queue message module for YauS",
     "keywords": "Scheduler YauS queue",
     "repository": {
