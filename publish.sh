@@ -22,3 +22,8 @@ cd drivers
 pio pkg publish --no-interactive
 cd ..
 
+cd queue
+pio pkg publish --no-interactive
+cd ..
+
+pause
