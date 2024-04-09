@@ -1,0 +1,22 @@
+{
+    "name": "YauS-queue",
+    "version": "0.0.01",
+    "description": "YauS-queue is a queue message module for YauS",
+    "keywords": "Scheduler YauS queue",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/remyar/_YauS_"
+    },
+    "authors": [
+        {
+            "name": "ARNAUDIN Rémy",
+            "url": "https://github.com/remyar/_YauS_/issues/new"
+        }
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/remyar/_YauS_",
+    "dependencies": {
+    },
+    "frameworks": "*",
+    "platforms": "*"
+}
