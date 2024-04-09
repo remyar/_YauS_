@@ -23,7 +23,7 @@
 #include "./_YauS_Type.h"
 #include "../_YauS_Config.h"
 #include "./_YauS_Tick.h"
-#include "./_YauS_Queue.h"
+//#include "./_YauS_Queue.h"
 #ifdef YAUS_USE_MODULE_CONSOLE
 #include "CONS_Task.h"
 #endif
