@@ -109,7 +109,7 @@ void ARCH_VSPIInit(uint8_t periphNum,
     switch (periphNum)
     {
     case (VSPI1):
-        if ((portScl != NULL) && (pinScl != NULL))
+        if ((portScl != (uint32_t)NULL) && (pinScl != (uint32_t)NULL))
         {
             sclVSPI1PinStruct.GPIO_PortStruct = (GPIO_TypeDef *)portScl;
             sclVSPI1PinStruct.GPIO_PinStruct.Pin = pinScl;
@@ -118,7 +118,7 @@ void ARCH_VSPIInit(uint8_t periphNum,
             sclVSPI1PinStruct.tempo = (1000000 / (speed * 2)) - 1;
             HAL_GPIO_Init(sclVSPI1PinStruct.GPIO_PortStruct, &sclVSPI1PinStruct.GPIO_PinStruct);
         }
-        if ((portMosi != NULL) && (pinMosi != NULL))
+        if ((portMosi != (uint32_t)NULL) && (pinMosi != (uint32_t)NULL))
         {
             mosiVSPI1PinStruct.GPIO_PortStruct = (GPIO_TypeDef *)portMosi;
             mosiVSPI1PinStruct.GPIO_PinStruct.Pin = pinMosi;
@@ -127,7 +127,7 @@ void ARCH_VSPIInit(uint8_t periphNum,
             mosiVSPI1PinStruct.tempo = (1000000 / (speed * 2)) - 1;
             HAL_GPIO_Init(mosiVSPI1PinStruct.GPIO_PortStruct, &mosiVSPI1PinStruct.GPIO_PinStruct);
         }
-        if ((portMiso != NULL) && (pinMiso != NULL))
+        if ((portMiso != (uint32_t)NULL) && (pinMiso != (uint32_t)NULL))
         {
             misoVSPI1PinStruct.GPIO_PortStruct = (GPIO_TypeDef *)portMiso;
             misoVSPI1PinStruct.GPIO_PinStruct.Pin = pinMiso;
@@ -136,7 +136,7 @@ void ARCH_VSPIInit(uint8_t periphNum,
             misoVSPI1PinStruct.tempo = (1000000 / (speed * 2)) - 1;
             HAL_GPIO_Init(misoVSPI1PinStruct.GPIO_PortStruct, &misoVSPI1PinStruct.GPIO_PinStruct);
         }
-        if ((portSs != NULL) && (pinSs != NULL))
+        if ((portSs != (uint32_t)NULL) && (pinSs != (uint32_t)NULL))
         {
             ssVSPI1PinStruct.GPIO_PortStruct = (GPIO_TypeDef *)portSs;
             ssVSPI1PinStruct.GPIO_PinStruct.Pin = pinSs;
@@ -164,7 +164,7 @@ void ARCH_VSPISendBytes(uint8_t periphNum, uint8_t *pData, uint8_t len)
     switch (periphNum)
     {
     case VSPI1:
-        if ((ssVSPI1PinStruct.GPIO_PortStruct != NULL) && (ssVSPI1PinStruct.GPIO_PinStruct.Pin != NULL))
+        if ((ssVSPI1PinStruct.GPIO_PortStruct != NULL) && (ssVSPI1PinStruct.GPIO_PinStruct.Pin != (uint32_t)NULL))
         {
             _setSsLevel(periphNum, GPIO_PIN_RESET);
         }
@@ -173,7 +173,7 @@ void ARCH_VSPISendBytes(uint8_t periphNum, uint8_t *pData, uint8_t len)
             pData[i] = _sendAndReceiveByte(periphNum, pData[i]);
         }
 
-        if ((ssVSPI1PinStruct.GPIO_PortStruct != NULL) && (ssVSPI1PinStruct.GPIO_PinStruct.Pin != NULL))
+        if ((ssVSPI1PinStruct.GPIO_PortStruct != NULL) && (ssVSPI1PinStruct.GPIO_PinStruct.Pin != (uint32_t)NULL))
         {
             _setSsLevel(periphNum, GPIO_PIN_SET);
         }

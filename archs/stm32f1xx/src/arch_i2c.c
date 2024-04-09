@@ -57,21 +57,13 @@ void ARCH_I2CSendBytes(uint32_t periphNum, uint8_t addr, uint8_t *pData, uint8_t
         }
         if ((addr & I2C_READ) == true)
         {
-
             if (HAL_I2C_Master_Receive(&hi2c2, addr, pData, length, 100) == HAL_OK)
             {
-                s_MSG_I2C sMsg;
-                sMsg.addr = ((addr >> 1) & 0x7F);
-                sMsg.length = length;
-                memcpy(sMsg.data, pData, length);
-                YAUS_msgSend(YAUS_QUEUE_I2C2_RX_HANDLE, &sMsg);
+
             }
             else
             {
-                s_MSG_I2C sMsg;
-                sMsg.addr = ((addr >> 1) & 0x7F);
-                sMsg.length = 0;
-                YAUS_msgSend(YAUS_QUEUE_I2C2_RX_HANDLE, &sMsg);
+
             }
         }
     }
@@ -79,10 +71,10 @@ void ARCH_I2CSendBytes(uint32_t periphNum, uint8_t addr, uint8_t *pData, uint8_t
 
 void ARCH_I2C2Init(uint32_t freq, uint32_t flags)
 {
-    ARCH_I2CInit(I2C2, freq, flags);
+    ARCH_I2CInit((uint32_t)I2C2, freq, flags);
 }
 
 void ARCH_I2C2SendBytes(uint8_t addr, uint8_t *pData, uint8_t length)
 {
-    ARCH_I2CSendBytes(I2C2, addr, pData, length);
+    ARCH_I2CSendBytes((uint32_t)I2C2, addr, pData, length);
 }

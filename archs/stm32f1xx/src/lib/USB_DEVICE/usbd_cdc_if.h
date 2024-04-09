@@ -109,8 +109,7 @@ extern "C"
   uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len);
 
   /* USER CODE BEGIN EXPORTED_FUNCTIONS */
-  uint8_t ARCH_UsbRead(void);
-  bool ARCH_UsbAvailable(void);
+
 
   /* USER CODE END EXPORTED_FUNCTIONS */
 

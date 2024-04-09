@@ -69,10 +69,10 @@ uint8_t ARCH_SpiSendByte(uint32_t periphNum, uint8_t data)
 
 void ARCH_Spi1Init(unsigned long freq, uint32_t flags)
 {
-    ARCH_SpiInit(SPI1, freq, flags);
+    ARCH_SpiInit((uint32_t)SPI1, freq, flags);
 }
 
 uint8_t ARCH_Spi1SendByte(uint8_t data)
 {
-    return ARCH_SpiSendByte(SPI1, data);
+    return ARCH_SpiSendByte((uint32_t)SPI1, data);
 }

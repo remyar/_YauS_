@@ -16,7 +16,7 @@ static uint16_t _Uart1ReadIdx = 0;
 
 void ARCH_UartInit(USART_TypeDef *uartNum, unsigned long baud, uint32_t flags)
 {
-    UART_HandleTypeDef *huart;
+    UART_HandleTypeDef *huart = NULL;
     GPIO_InitTypeDef GPIO_InitStruct = {0};
 
     if (uartNum == USART1)
@@ -104,20 +104,22 @@ void ARCH_UartInit(USART_TypeDef *uartNum, unsigned long baud, uint32_t flags)
         Error_Handler();
     }
 
-    huart->Instance = uartNum;
-    huart->Init.BaudRate = baud;
-    huart->Init.WordLength = UART_WORDLENGTH_8B;
-    huart->Init.StopBits = UART_STOPBITS_1;
-    huart->Init.Parity = UART_PARITY_NONE;
-    huart->Init.Mode = UART_MODE_TX_RX;
-    huart->Init.HwFlowCtl = UART_HWCONTROL_NONE;
-    huart->Init.OverSampling = UART_OVERSAMPLING_16;
-
-    if (HAL_UART_Init(huart) != HAL_OK)
+    if (huart != NULL)
     {
-        Error_Handler();
-    }
+        huart->Instance = uartNum;
+        huart->Init.BaudRate = baud;
+        huart->Init.WordLength = UART_WORDLENGTH_8B;
+        huart->Init.StopBits = UART_STOPBITS_1;
+        huart->Init.Parity = UART_PARITY_NONE;
+        huart->Init.Mode = UART_MODE_TX_RX;
+        huart->Init.HwFlowCtl = UART_HWCONTROL_NONE;
+        huart->Init.OverSampling = UART_OVERSAMPLING_16;
 
+        if (HAL_UART_Init(huart) != HAL_OK)
+        {
+            Error_Handler();
+        }
+    }
     if (uartNum == USART1)
     {
         /* USART1 interrupt Init */
@@ -267,34 +269,37 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     }
     if (huart->Instance == USART2)
     {
-        s_MSG_UART uartData;
-        uartData.length = 1;
-        uartData.data[0] = dataHuart2;
+        /*        s_MSG_UART uartData;
+                uartData.length = 1;
+                uartData.data[0] = dataHuart2;
 
-        if (useRs4852 == false)
-        {
-            YAUS_msgSend(YAUS_QUEUE_UART2_RX_HANDLE, &uartData);
-        }
-        else
-        {
-            YAUS_msgSend(YAUS_QUEUE_RS4852_RX_HANDLE, &uartData);
-        }
+
+                if (useRs4852 == false)
+                {
+                    YAUS_msgSend(YAUS_QUEUE_UART2_RX_HANDLE, &uartData);
+                }
+                else
+                {
+                    YAUS_msgSend(YAUS_QUEUE_RS4852_RX_HANDLE, &uartData);
+                }
+                */
         HAL_UART_Receive_IT(huart, &dataHuart2, 1);
     }
     if (huart->Instance == USART3)
     {
-        s_MSG_UART uartData;
-        uartData.length = 1;
-        uartData.data[0] = dataHuart3;
+        /*        s_MSG_UART uartData;
+               uartData.length = 1;
+               uartData.data[0] = dataHuart3;
 
-        if (useRs4853 == false)
-        {
-            YAUS_msgSend(YAUS_QUEUE_UART3_RX_HANDLE, &uartData);
-        }
-        else
-        {
-            YAUS_msgSend(YAUS_QUEUE_RS4853_RX_HANDLE, &uartData);
-        }
+               if (useRs4853 == false)
+               {
+                   YAUS_msgSend(YAUS_QUEUE_UART3_RX_HANDLE, &uartData);
+               }
+               else
+               {
+                   YAUS_msgSend(YAUS_QUEUE_RS4853_RX_HANDLE, &uartData);
+               }
+                */
         HAL_UART_Receive_IT(huart, &dataHuart3, 1);
     }
 }

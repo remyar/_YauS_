@@ -1,0 +1,22 @@
+{
+    "name": "YauS-events",
+    "version": "0.0.1",
+    "description": "YauS-events is a events module for YauS",
+    "keywords": "Scheduler YauS events",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/remyar/_YauS_"
+    },
+    "authors": [
+        {
+            "name": "ARNAUDIN Rémy",
+            "url": "https://github.com/remyar/_YauS_/issues/new"
+        }
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/remyar/_YauS_",
+    "dependencies": {
+    },
+    "frameworks": "*",
+    "platforms": "*"
+}

@@ -232,12 +232,12 @@ void ARCH_VI2CSendBytes(uint8_t periphNum, uint8_t addr, uint8_t *pData, uint8_t
             if (stop == true)
                 _stop(periphNum);
             // HAL_I2C_Master_Receive(&hi2c2, addr, pData, len, 100);
-
+/*
             s_MSG_I2C sMsg;
             sMsg.addr = ((addr >> 1) & 0x7F);
             sMsg.length = len;
             memcpy(sMsg.data, pData, len);
-            YAUS_msgSend(YAUS_QUEUE_VI2C1_RX_HANDLE, &sMsg);
+            YAUS_msgSend(YAUS_QUEUE_VI2C1_RX_HANDLE, &sMsg);*/
         }
         break;
     }

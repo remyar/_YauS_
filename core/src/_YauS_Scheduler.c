@@ -124,8 +124,9 @@ void YAUS_Init(void)
     ARCH_Init();
 #endif
 
+#ifdef YAUS_USE_QUEUE
     YAUS_msgInit();
-
+#endif
     YAUS_TickInit();
 
 #ifdef YAUS_USE_MODULE_DRIVERS

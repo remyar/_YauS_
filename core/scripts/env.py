@@ -21,6 +21,14 @@ for lib in libs:
             "YAUS_USE_MODULE_DRIVERS",
         ])
 
+    if "YauS-queue" in lib:
+        env.Append(CPPDEFINES=[
+            "YAUS_USE_QUEUE",
+        ])
+
+
+
+
 
 
 

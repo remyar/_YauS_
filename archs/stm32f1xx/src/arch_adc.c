@@ -1,6 +1,6 @@
 #include "arch_adc.h"
 
-static ADC_ChannelConfTypeDef sConfig = {0};
+//static ADC_ChannelConfTypeDef sConfig = {0};
 ADC_HandleTypeDef hadc1;
 static uint8_t ADC_channels[MAX_ADC];
 static uint8_t ADC_nbChannel = 0;
@@ -24,7 +24,7 @@ bool _allreadyConfigured(uint8_t pin)
 
 uint32_t _getChannelFromPeriphNum(uint32_t periphNum)
 {
-    uint32_t channel = NULL;
+    uint32_t channel = (uint32_t)NULL;
     switch (periphNum)
     {
     case (ADC_PA0):
@@ -41,7 +41,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
     if (hadc->Instance == ADC1)
     {
-        ADC_value[ADC_idxChannel] = HAL_ADC_GetValue(&hadc);
+        ADC_value[ADC_idxChannel] = HAL_ADC_GetValue(hadc);
         ADC_state = ADC_STATE_FINISH;
     }
 }

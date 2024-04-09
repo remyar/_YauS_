@@ -255,7 +255,7 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
  * @param  Len: Number of data received (in bytes)
  * @retval Result of the operation: USBD_OK if all operations are OK else USBD_FAIL
  */
-static uint8_t _usbRxBuffer[128];
+static uint8_t _usbRxBuffer[64];
 static uint16_t _usbRxIdx = 0;
 static uint16_t _usbReadIdx = 0;
 
@@ -323,6 +323,14 @@ uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len)
   return result;
 }
 
+uint8_t ARCH_UsbSend(uint8_t *Buf, uint16_t Len)
+{
+  if (Len > APP_TX_DATA_SIZE)
+  {
+    HardFault_Handler();
+  }
+  return CDC_Transmit_FS(Buf, Len);
+}
 /* USER CODE BEGIN PRIVATE_FUNCTIONS_IMPLEMENTATION */
 
 /* USER CODE END PRIVATE_FUNCTIONS_IMPLEMENTATION */
