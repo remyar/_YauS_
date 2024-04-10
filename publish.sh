@@ -26,4 +26,8 @@ cd queue
 pio pkg publish --no-interactive
 cd ..
 
+cd events
+pio pkg publish --no-interactive
+cd ..
+
 pause

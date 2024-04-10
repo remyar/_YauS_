@@ -26,6 +26,11 @@ for lib in libs:
             "YAUS_USE_QUEUE",
         ])
 
+    if "YauS-events" in lib:
+        env.Append(CPPDEFINES=[
+            "YAUS_USE_EVENTS",
+        ])
+
 
 
 

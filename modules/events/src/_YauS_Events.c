@@ -20,6 +20,7 @@
 //--- DEFINITIONS
 //=============================================================================
 
+s_EVENT sEvent[YAUS_MAX_TASKS];
 extern s_TASK tasks[YAUS_MAX_TASKS];
 
 //-----------------------------------------------------------------------------
@@ -33,7 +34,7 @@ void EVENT_None(uint8_t TaskId)
     {
         if (tasks[i].idx == TaskId)
         {
-            tasks[i].event.type = NULL;
+            sEvent[i].type = (uint32_t)NULL;
         }
     }
 }
@@ -49,12 +50,18 @@ void EVENT_Clear(uint8_t TaskId, uint32_t type)
     {
         if (tasks[i].idx == TaskId)
         {
-            if (tasks[i].event.type != NULL)
+            if (sEvent[i].type != (uint32_t)NULL)
             {
-                tasks[i].event.type &= ~type;
+                sEvent[i].type &= ~type;
             }
         }
     }
+}
+
+void EVENT_Immediat(uint8_t TaskId, uint32_t type, void *pValue)
+{
+    EVENT_Push(TaskId, type, pValue);
+    YAUS_TaskForce(TaskId);
 }
 
 void EVENT_Push(uint8_t TaskId, uint32_t type, void *pValue)
@@ -75,23 +82,22 @@ void EVENT_Push(uint8_t TaskId, uint32_t type, void *pValue)
             {
                 s_LED_EVENT *v = (s_LED_EVENT *)pValue;
                 sE.led.state = v->state;
+                sE.led.idxLed = v->idxLed;
                 sE.led.delay = v->delay;
-                sE.led.rpm.maxRpm = v->rpm.maxRpm;
-                sE.led.rpm.rpm = v->rpm.rpm;
-                sE.led.lum = v->lum;
             }
+            if (type == COMPC_EVENT)
+            {
+                s_COMPC_EVENT *v = (s_COMPC_EVENT *)pValue;
+                sE.compc.length = v->length;
+                memcpy(sE.compc.buff, v->buff, v->length);
+            }
+
+            /*
             if (type == DISPLAY_EVENT)
             {
                 s_DISPLAY_EVENT *v = (s_DISPLAY_EVENT *)pValue;
                 sE.display.index = v->index;
                 sE.display.value = v->value;
-            }
-            if (type == COMPC_EVENT)
-            {
-                s_COMPC_EVENT *v = (s_COMPC_EVENT *)pValue;
-                sE.compc.state = v->state;
-                sE.compc.length = v->length;
-                //  sE.compc.str = v->str;
             }
             if (type == PLIP_EVENT)
             {
@@ -124,21 +130,37 @@ void EVENT_Push(uint8_t TaskId, uint32_t type, void *pValue)
             if (type == GET_VAL_EVENT)
             {
             }
-
-            tasks[i].event = sE;
+*/
+            sEvent[i] = sE;
         }
     }
 }
 
-bool EVENT_HasEvent(void)
+bool EVENT_HasEvent(uint8_t TaskId)
 {
     bool val = false;
-    for (int i = 0; i < MAX_TASKS; i++)
+    for (int i = 0; i < YAUS_MAX_TASKS; i++)
     {
-        if (tasks[i].event.type != NULL)
+        if (tasks[i].idx == TaskId)
         {
-            val = true;
+            if (sEvent[i].type != (uint32_t)NULL)
+            {
+                val = true;
+            }
         }
     }
     return val;
+}
+
+s_EVENT *EVENT_GetEvent(uint8_t TaskId)
+{
+    s_EVENT *pEvent = NULL;
+    for (int i = 0; i < YAUS_MAX_TASKS; i++)
+    {
+        if (tasks[i].idx == TaskId)
+        {
+            pEvent = &sEvent[i];
+        }
+    }
+    return pEvent;
 }

@@ -46,9 +46,9 @@ void YAUS_TaskForce(uint32_t handle)
             //--- Execution des taches
             if (tasks[i].run != NULL)
             {
-                tasks[i].status = RUNNING_STATUS;
+                //tasks[i].status = RUNNING_STATUS;
                 tasks[i].run();
-                tasks[i].status = END_RUN_STATUS;
+                //tasks[i].status = END_RUN_STATUS;
             }
         }
     }
@@ -61,7 +61,7 @@ uint32_t YAUS_TaskCreate(char *name, void *initFunc, void *runFunc, int16_t peri
     /* on cherche un slot de libre */
     for (i = 0; i < YAUS_MAX_TASKS; i++)
     {
-        if (tasks[i].idx == NULL)
+        if (tasks[i].idx == 0)
         {
 
             j = 0xFF;
@@ -127,6 +127,7 @@ void YAUS_Init(void)
 #ifdef YAUS_USE_QUEUE
     YAUS_msgInit();
 #endif
+
     YAUS_TickInit();
 
 #ifdef YAUS_USE_MODULE_DRIVERS
@@ -164,7 +165,12 @@ void YAUS_Run(bool blocking)
 {
     uint32_t tick;
     static uint8_t i = 0;
-
+#ifdef YAUS_USE_EVENTS
+    for (i = 0; i < YAUS_MAX_TASKS; i++)
+    {
+        EVENT_None(tasks[i].idx);
+    }
+#endif
     do
     {
         /*

@@ -22,9 +22,12 @@
 /** INCLUDES *******************************************************/
 #include "../_YauS_Config.h"
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+
+#include "_YauS_Events.h"
 
 /** CONSTANTS ******************************************************/
 

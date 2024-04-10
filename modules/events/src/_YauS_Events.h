@@ -10,12 +10,11 @@
 //-----------------------------------------------------------------------------
 // Fichiers Inclus
 //-----------------------------------------------------------------------------
-//#include "TypeDefs.h"
+#include <arch.h>
 
 //-----------------------------------------------------------------------------
 // Definition de type
 //-----------------------------------------------------------------------------
-#define EVENTS_FIFO_SIZE 16
 
 #define EVENT_HAS(E, K) (((E)->type & (K)) == (K))
 
@@ -43,10 +42,9 @@ typedef struct //--- s_KEYB_EVENT
 
 typedef struct //--- s_LED_EVENT
 {
+    uint8_t idxLed;
     uint8_t state;
-    uint32_t delay;
-    s_RPM_LED_EVENT rpm;
-    uint8_t lum;
+    uint16_t delay;
 } s_LED_EVENT;
 
 typedef struct //--- s_DISPLAY_EVENT
@@ -57,8 +55,9 @@ typedef struct //--- s_DISPLAY_EVENT
 
 typedef struct //--- s_COMPC_EVENT
 {
-    uint8_t state;
+    //uint8_t state;
     uint8_t length;
+    uint8_t buff[128];
 } s_COMPC_EVENT;
 
 typedef struct //--- s_CANBUS_EVENT
@@ -85,12 +84,12 @@ typedef struct //--- s_EVENT
     s_COMPC_EVENT compc;
     s_KEYB_EVENT key;
     s_LED_EVENT led;
-    s_DISPLAY_EVENT display;
-    s_PLIP_EVENT plip;
-    s_MCU_EVENT mcu;
-    s_CANBUS_EVENT canBus;
-    s_TOUCH_EVENT touch;
-    s_GET_TEXT_EVENT getText;
+    //s_DISPLAY_EVENT display;
+    //s_PLIP_EVENT plip;
+    //s_MCU_EVENT mcu;
+    //s_CANBUS_EVENT canBus;
+    //s_TOUCH_EVENT touch;
+    //s_GET_TEXT_EVENT getText;
 } s_EVENT;
 
 #define NO_EVENT 0x0000
@@ -106,6 +105,7 @@ typedef struct //--- s_EVENT
 #define GET_VAL_EVENT (uint32_t)(1 << 10)
 #define ADC_EVENT (uint32_t)(1 << 11)
 #define MEAS_EVENT (uint32_t)(1 << 12)
+#define CAMP_EVENT (uint32_t)(1 << 13)
 
 //-----------------------------------------------------------------------------
 // Fonctions publiques
@@ -113,6 +113,8 @@ typedef struct //--- s_EVENT
 void EVENT_None(uint8_t TaskId);
 void EVENT_Clear(uint8_t TaskId, uint32_t type);
 void EVENT_Push(uint8_t TaskId, uint32_t type, void *pValue);
-bool EVENT_HasEvent(void);
+bool EVENT_HasEvent(uint8_t TaskId);
+s_EVENT *EVENT_GetEvent(uint8_t TaskId);
+void EVENT_Immediat(uint8_t TaskId, uint32_t type, void *pValue);
 
 #endif //--- EVENT_H

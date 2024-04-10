@@ -33,6 +33,9 @@
 #ifdef YAUS_USE_ARCH
 #include <arch.h>
 #endif
+#ifdef YAUS_USE_EVENTS
+#include "_YauS_Events.h"
+#endif
 /** CONSTANTS ******************************************************/
 #define YAUS_TimerCreate(X, Y, Z) LLD_TimerCreate(X, Y, Z)
 #define YAUS_TimerClose(X) LLD_TimerCreate(X)
