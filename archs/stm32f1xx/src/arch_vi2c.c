@@ -204,7 +204,6 @@ void ARCH_VI2CSendBytes(uint8_t periphNum, uint8_t addr, uint8_t *pData, uint8_t
     case VI2C1:
         if ((addr & I2C_READ) == false)
         {
-            //_setDataOut(periphNum);
             _start(periphNum);
             _sendByte(periphNum, addr);
             for (uint8_t i = 0; i < len; i++)
@@ -213,8 +212,6 @@ void ARCH_VI2CSendBytes(uint8_t periphNum, uint8_t addr, uint8_t *pData, uint8_t
             }
             if (stop == true)
                 _stop(periphNum);
-
-            // HAL_I2C_Master_Transmit(&hi2c2, addr, pData, len, 100);
         }
         if ((addr & I2C_READ) == true)
         {

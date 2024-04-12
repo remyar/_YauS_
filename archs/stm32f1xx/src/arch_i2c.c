@@ -47,10 +47,11 @@ void ARCH_I2CInit(uint32_t periphNum, unsigned long freq, uint32_t flags)
     }
 }
 
-void ARCH_I2CSendBytes(uint32_t periphNum, uint8_t addr, uint8_t *pData, uint8_t length)
+void ARCH_I2CSendBytes(uint32_t periphNum, uint8_t addr, uint8_t *pData, uint8_t length, bool stop)
 {
     if (periphNum == (uint32_t)I2C2)
     {
+        //-- stop not used
         if ((addr & I2C_READ) == false)
         {
             HAL_I2C_Master_Transmit(&hi2c2, addr, pData, length, 100);
@@ -59,13 +60,15 @@ void ARCH_I2CSendBytes(uint32_t periphNum, uint8_t addr, uint8_t *pData, uint8_t
         {
             if (HAL_I2C_Master_Receive(&hi2c2, addr, pData, length, 100) == HAL_OK)
             {
-
             }
             else
             {
-
             }
         }
+    }
+    if (periphNum == (uint32_t)VI2C1)
+    {
+        ARCH_VI2CSendBytes(periphNum, addr, pData, length, stop);
     }
 }
 
@@ -76,5 +79,5 @@ void ARCH_I2C2Init(uint32_t freq, uint32_t flags)
 
 void ARCH_I2C2SendBytes(uint8_t addr, uint8_t *pData, uint8_t length)
 {
-    ARCH_I2CSendBytes((uint32_t)I2C2, addr, pData, length);
+    ARCH_I2CSendBytes((uint32_t)I2C2, addr, pData, length, NULL);
 }
