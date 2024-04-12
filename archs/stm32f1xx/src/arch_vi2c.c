@@ -104,7 +104,7 @@ static void _sendAck(uint8_t periphNum, bool ack)
     _setClockLevel(periphNum, GPIO_PIN_RESET);
 }
 
-bool _sendByte(uint8_t periphNum, uint8_t data)
+static bool _sendByte(uint8_t periphNum, uint8_t data)
 {
     uint8_t i;
     _setDataOut(periphNum); //--- Data en sortie
@@ -124,7 +124,7 @@ bool _sendByte(uint8_t periphNum, uint8_t data)
     return _readAck(periphNum);
 }
 
-uint8_t _readByte(uint8_t periphNum, bool ackEnabled)
+static uint8_t _readByte(uint8_t periphNum, bool ackEnabled)
 {
     uint8_t i;
     uint8_t localData = 0;
@@ -229,12 +229,12 @@ void ARCH_VI2CSendBytes(uint8_t periphNum, uint8_t addr, uint8_t *pData, uint8_t
             if (stop == true)
                 _stop(periphNum);
             // HAL_I2C_Master_Receive(&hi2c2, addr, pData, len, 100);
-/*
-            s_MSG_I2C sMsg;
-            sMsg.addr = ((addr >> 1) & 0x7F);
-            sMsg.length = len;
-            memcpy(sMsg.data, pData, len);
-            YAUS_msgSend(YAUS_QUEUE_VI2C1_RX_HANDLE, &sMsg);*/
+            /*
+                        s_MSG_I2C sMsg;
+                        sMsg.addr = ((addr >> 1) & 0x7F);
+                        sMsg.length = len;
+                        memcpy(sMsg.data, pData, len);
+                        YAUS_msgSend(YAUS_QUEUE_VI2C1_RX_HANDLE, &sMsg);*/
         }
         break;
     }
