@@ -36,6 +36,16 @@ void ARCH_RS4851SendByteSync(uint8_t data)
     HAL_GPIO_WriteFastPin(rs4851PinStruct.GPIO_PortStruct, rs4851PinStruct.GPIO_PinStruct.Pin, GPIO_PIN_RESET);
 }
 
+void ARCH_RS4851SendBytesSync(uint8_t *pData, uint16_t length)
+{
+    HAL_GPIO_WriteFastPin(rs4851PinStruct.GPIO_PortStruct, rs4851PinStruct.GPIO_PinStruct.Pin, GPIO_PIN_SET);
+    for (uint16_t i = 0; i < length; i++)
+    {
+        ARCH_Uart1SendByteSync(pData[i]);
+    }
+    HAL_GPIO_WriteFastPin(rs4851PinStruct.GPIO_PortStruct, rs4851PinStruct.GPIO_PinStruct.Pin, GPIO_PIN_RESET);
+}
+
 bool ARCH_RS4851Available(void){
     return ARCH_Uart1Available();
 }
