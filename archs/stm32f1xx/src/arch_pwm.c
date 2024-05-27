@@ -160,7 +160,7 @@ void ARCH_Pwm1SetDutyCycle(float percent)
 
 void ARCH_Pwm2Init(unsigned long freq, uint32_t flags)
 {
-    ARCH_PwmInit(PWMB0, freq, flags);
+    ARCH_PwmInit(PWMB1, freq, flags);
 }
 
 void ARCH_Pwm2SetDutyCycle(float percent)
