@@ -27,7 +27,9 @@
 #include <stdint.h>
 #include <string.h>
 
+#ifdef YAUS_USE_EVENTS
 #include "_YauS_Events.h"
+#endif
 
 /** CONSTANTS ******************************************************/
 
