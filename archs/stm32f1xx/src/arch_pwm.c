@@ -8,7 +8,7 @@ void ARCH_PwmInit(uint32_t periphNum, unsigned long freq, uint32_t flags)
     TIM_MasterConfigTypeDef sMasterConfig = {0};
     TIM_OC_InitTypeDef sConfigOC = {0};
     uint32_t clk;
-    uint32_t period;
+    uint32_t period = 0;
     GPIO_InitTypeDef GPIO_InitStruct = {0};
 
     switch (periphNum)
@@ -82,14 +82,31 @@ void ARCH_PwmInit(uint32_t periphNum, unsigned long freq, uint32_t flags)
 
         /* USER CODE BEGIN TIM3_Init 1 */
         clk = HAL_RCC_GetPCLK1Freq() * 2;
-        period = clk / freq;
+        // period = clk / freq;
 
         htim3.Init.Prescaler = 0;
 
-        while (period > 65000)
+        while ((clk / (htim3.Init.Prescaler + 1)) > freq)
         {
             htim3.Init.Prescaler++;
-            period /= 2;
+            if (htim3.Init.Prescaler >= 65535)
+            {
+                break;
+            }
+        }
+
+        while (period < 1024)
+        {
+            period = clk / (htim3.Init.Prescaler + 1);
+            period /= freq;
+            if (period < 1024)
+            {
+                htim3.Init.Prescaler--;
+                if (htim3.Init.Prescaler <= 0)
+                {
+                    break;
+                }
+            }
         }
 
         /* USER CODE END TIM3_Init 1 */
