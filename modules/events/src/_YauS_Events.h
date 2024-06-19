@@ -47,6 +47,11 @@ typedef struct //--- s_LED_EVENT
     uint16_t delay;
 } s_LED_EVENT;
 
+typedef struct //-- s_MEAS_EVENT
+{
+    bool autoZ;
+} s_MEAS_PRESS_EVENT;
+
 typedef struct //--- s_DISPLAY_EVENT
 {
     uint8_t index;
@@ -106,6 +111,7 @@ typedef struct //--- s_EVENT
 #define ADC_EVENT (uint32_t)(1 << 11)
 #define MEAS_EVENT (uint32_t)(1 << 12)
 #define CAMP_EVENT (uint32_t)(1 << 13)
+#define MEAS_PRESS_EVENT (uint32_t)(1 << 14)
 
 //-----------------------------------------------------------------------------
 // Fonctions publiques

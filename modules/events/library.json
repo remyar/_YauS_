@@ -1,6 +1,6 @@
 {
     "name": "YauS-events",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "YauS-events is a events module for YauS",
     "keywords": "Scheduler YauS events",
     "repository": {

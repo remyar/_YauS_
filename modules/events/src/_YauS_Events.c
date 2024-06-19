@@ -91,7 +91,11 @@ void EVENT_Push(uint8_t TaskId, uint32_t type, void *pValue)
                 sE.compc.length = v->length;
                 memcpy(sE.compc.buff, v->buff, v->length);
             }
-
+            if (type == MEAS_PRESS_EVENT)
+            {
+                s_MEAS_PRESS_EVENT *v = (s_MEAS_PRESS_EVENT *)pValue;
+                sE.meas.autoZ = v->autoZ;
+            }
             /*
             if (type == DISPLAY_EVENT)
             {
