@@ -2,7 +2,7 @@ Import("env", "projenv" )
 
 libs=env.GetProjectOption("lib_deps")
 
-archsToCheck = ['YauS-stm32f1xx']
+archsToCheck = ['YauS-stm32f1xx'  , 'YauS-stm32f4xx']
 
 for lib in libs:
     for ext in archsToCheck:

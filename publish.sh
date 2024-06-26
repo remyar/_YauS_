@@ -9,6 +9,9 @@ cd archs
 cd stm32f1xx
 pio pkg publish --no-interactive
 cd ..
+cd stm32f4xx
+pio pkg publish --no-interactive
+cd ..
 
 cd ..
 
