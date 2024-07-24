@@ -30,7 +30,9 @@ void ARCH_Uart2SendByteSync(uint8_t data);
 void ARCH_Uart3SendByteSync(uint8_t data);
 
 bool ARCH_Uart1Available(void);
-uint8_t ARCH_Uart1Read(void);
+bool ARCH_Uart2Available(void);
 
+uint8_t ARCH_Uart1Read(void);
+uint8_t ARCH_Uart2Read(void);
 
 #endif

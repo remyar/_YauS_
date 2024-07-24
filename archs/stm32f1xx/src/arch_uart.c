@@ -14,6 +14,10 @@ static uint8_t _Uart1RxBuffer[64];
 static uint16_t _Uart1RxIdx = 0;
 static uint16_t _Uart1ReadIdx = 0;
 
+static uint8_t _Uart2RxBuffer[64];
+static uint16_t _Uart2RxIdx = 0;
+static uint16_t _Uart2ReadIdx = 0;
+
 void ARCH_UartInit(USART_TypeDef *uartNum, unsigned long baud, uint32_t flags)
 {
     UART_HandleTypeDef *huart = NULL;
@@ -74,6 +78,34 @@ void ARCH_UartInit(USART_TypeDef *uartNum, unsigned long baud, uint32_t flags)
     }
     else if (uartNum == USART2)
     {
+        /* Peripheral clock enable */
+        if (__HAL_RCC_USART2_IS_CLK_DISABLED())
+            __HAL_RCC_USART2_CLK_ENABLE();
+
+        /**USART2 GPIO Configuration
+        PA2     ------> USART2_TX
+        PA3     ------> USART2_RX
+        */
+
+        if (Has_flag(flags, USE_ALTERNATE_FUNCTION))
+        {
+        } else {
+            if (__HAL_RCC_GPIOA_IS_CLK_DISABLED())
+                __HAL_RCC_GPIOA_CLK_ENABLE();
+
+            GPIO_InitStruct.Pin = GPIO_PIN_2;
+            GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+            GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+            HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+            GPIO_InitStruct.Pin = GPIO_PIN_3;
+            GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+            GPIO_InitStruct.Pull = GPIO_NOPULL;
+            HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+        }
+
+        _Uart2RxIdx = 0;
+        huart = &huart2;
     }
     else if (uartNum == USART3)
     {
@@ -162,7 +194,17 @@ void ARCH_Uart3Init(uint32_t speed, uint32_t flags)
 
 void ARCH_UartSendByteSync(USART_TypeDef *uartNum, uint8_t data)
 {
-    HAL_UART_Transmit(&huart1, &data, 1, 10);
+    if (uartNum == USART1)
+    {
+        HAL_UART_Transmit(&huart1, &data, 1, 10);
+    }
+    else if (uartNum == USART2){
+        HAL_UART_Transmit(&huart2, &data, 1, 10);
+    }
+    else if (uartNum == USART3)
+    {
+        HAL_UART_Transmit(&huart3, &data, 1, 10);
+    }
 }
 
 void ARCH_Uart1SendByteSync(uint8_t data)
@@ -254,6 +296,22 @@ uint8_t ARCH_Uart1Read(void)
     return val8;
 }
 
+bool ARCH_Uart2Available(void)
+{
+    return _Uart2RxIdx != _Uart2ReadIdx;
+}
+
+uint8_t ARCH_Uart2Read(void)
+{
+    uint8_t val8 = _Uart2RxBuffer[_Uart2ReadIdx];
+    _Uart2ReadIdx++;
+    if (_Uart2ReadIdx >= sizeof(_Uart2RxBuffer))
+    {
+        _Uart2ReadIdx = 0;
+    }
+    return val8;
+}
+
 //-- rx received byte callback
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
@@ -269,37 +327,16 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     }
     if (huart->Instance == USART2)
     {
-        /*        s_MSG_UART uartData;
-                uartData.length = 1;
-                uartData.data[0] = dataHuart2;
-
-
-                if (useRs4852 == false)
-                {
-                    YAUS_msgSend(YAUS_QUEUE_UART2_RX_HANDLE, &uartData);
-                }
-                else
-                {
-                    YAUS_msgSend(YAUS_QUEUE_RS4852_RX_HANDLE, &uartData);
-                }
-                */
+        _Uart2RxBuffer[_Uart2RxIdx] = dataHuart2;
+        _Uart2RxIdx++;
+        if (_Uart2RxIdx >= sizeof(_Uart2RxBuffer))
+        {
+            _Uart2RxIdx = 0;
+        }
         HAL_UART_Receive_IT(huart, &dataHuart2, 1);
     }
     if (huart->Instance == USART3)
     {
-        /*        s_MSG_UART uartData;
-               uartData.length = 1;
-               uartData.data[0] = dataHuart3;
-
-               if (useRs4853 == false)
-               {
-                   YAUS_msgSend(YAUS_QUEUE_UART3_RX_HANDLE, &uartData);
-               }
-               else
-               {
-                   YAUS_msgSend(YAUS_QUEUE_RS4853_RX_HANDLE, &uartData);
-               }
-                */
         HAL_UART_Receive_IT(huart, &dataHuart3, 1);
     }
 }
