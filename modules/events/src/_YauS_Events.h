@@ -89,6 +89,7 @@ typedef struct //--- s_EVENT
     s_COMPC_EVENT compc;
     s_KEYB_EVENT key;
     s_LED_EVENT led;
+    s_MEAS_PRESS_EVENT meas;
     //s_DISPLAY_EVENT display;
     //s_PLIP_EVENT plip;
     //s_MCU_EVENT mcu;
