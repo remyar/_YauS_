@@ -57,6 +57,14 @@ uint32_t YAUS_TickNbCountSince(uint32_t lastCount)
 	return (uint32_t)(res);
 }
 
+void YAUS_Delay(uint32_t ms)
+{
+	uint32_t tick = YAUS_TickCount();
+
+	while (YAUS_TickNbCountSince(tick) <= ms)
+		;
+}
+
 //=============================================================================
 //--- INTERRUPTIONS
 //=============================================================================

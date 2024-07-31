@@ -35,5 +35,6 @@ void YAUS_TickInit(void);
 uint32_t YAUS_TickCount(void);
 uint32_t YAUS_TickNbCountSince(uint32_t lastCount);
 void YAUS_HandleIT(void);
+void YAUS_Delay(uint32_t ms);
 
 #endif /* _LLD_TICK_H_INCLUDED */
