@@ -64,6 +64,11 @@ USBD_HandleTypeDef hUsbDeviceFS;
 void MX_USB_DEVICE_Init(void)
 {
   /* USER CODE BEGIN USB_DEVICE_Init_PreTreatment */
+  pinMode(PA12, OUTPUT);
+  digitalWrite(PA12 , LOW);
+  HAL_Delay(5);
+  digitalWrite(PA12, HIGH);
+  HAL_Delay(5);
 
   /* USER CODE END USB_DEVICE_Init_PreTreatment */
 

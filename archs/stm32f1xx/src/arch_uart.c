@@ -10,11 +10,17 @@ static bool useRs4851 = false;
 static bool useRs4852 = false;
 static bool useRs4853 = false;
 
-static uint8_t _Uart1RxBuffer[64];
+#ifndef SERIAL1_RX_BUFFER_SIZE
+#define SERIAL1_RX_BUFFER_SIZE 0
+#endif
+static uint8_t _Uart1RxBuffer[SERIAL1_RX_BUFFER_SIZE + 64];
 static uint16_t _Uart1RxIdx = 0;
 static uint16_t _Uart1ReadIdx = 0;
 
-static uint8_t _Uart2RxBuffer[64];
+#ifndef SERIAL2_RX_BUFFER_SIZE
+#define SERIAL2_RX_BUFFER_SIZE 0
+#endif
+static uint8_t _Uart2RxBuffer[SERIAL2_RX_BUFFER_SIZE + 64];
 static uint16_t _Uart2RxIdx = 0;
 static uint16_t _Uart2ReadIdx = 0;
 
@@ -89,7 +95,9 @@ void ARCH_UartInit(USART_TypeDef *uartNum, unsigned long baud, uint32_t flags)
 
         if (Has_flag(flags, USE_ALTERNATE_FUNCTION))
         {
-        } else {
+        }
+        else
+        {
             if (__HAL_RCC_GPIOA_IS_CLK_DISABLED())
                 __HAL_RCC_GPIOA_CLK_ENABLE();
 
@@ -183,10 +191,12 @@ void ARCH_Uart1Init(uint32_t speed, uint32_t flags)
 {
     ARCH_UartInit(USART1, speed, flags);
 }
+
 void ARCH_Uart2Init(uint32_t speed, uint32_t flags)
 {
     ARCH_UartInit(USART2, speed, flags);
 }
+
 void ARCH_Uart3Init(uint32_t speed, uint32_t flags)
 {
     ARCH_UartInit(USART3, speed, flags);
@@ -198,7 +208,8 @@ void ARCH_UartSendByteSync(USART_TypeDef *uartNum, uint8_t data)
     {
         HAL_UART_Transmit(&huart1, &data, 1, 10);
     }
-    else if (uartNum == USART2){
+    else if (uartNum == USART2)
+    {
         HAL_UART_Transmit(&huart2, &data, 1, 10);
     }
     else if (uartNum == USART3)

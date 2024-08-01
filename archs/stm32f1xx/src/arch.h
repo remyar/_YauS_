@@ -17,9 +17,14 @@
 #include "arch_spi.h"
 #include "arch_vspi.h"
 
+//-- ARDUINO WRAPPPER
+#include "arduino_wrapper.h"
+
 #define USE_ALTERNATE_FUNCTION (1 << 0)
 
 #define Has_flag(X, Y) (((X & Y) == Y) ? true : false)
+
+
 
 void ARCH_Init(void);
 
