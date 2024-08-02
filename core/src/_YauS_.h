@@ -54,5 +54,7 @@ void YAUS_Init(void);
 void YAUS_Update(void);
 void YAUS_Run(bool blocking);
 void YAUS_TaskForce(uint32_t handle);
+void YAUS_PauseTask(uint32_t handle);
+void YAUS_ResumeTask(uint32_t handle);
 
 #endif /* _YAUS__H_INCLUDED */

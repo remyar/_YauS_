@@ -30,9 +30,37 @@
 /** VARIABLES ******************************************************/
 PTR_TASK_RUN_FUNC funcIdleHook = NULL;
 s_TASK tasks[YAUS_MAX_TASKS];
-//static uint32_t _tick = 0;
+// static uint32_t _tick = 0;
 
 /** DECLARATIONS ***************************************************/
+
+void YAUS_PauseTask(uint32_t handle)
+{
+    uint8_t i;
+
+    /* on cherche un slot de libre */
+    for (i = 0; i < YAUS_MAX_TASKS; i++)
+    {
+        if (tasks[i].idx == handle)
+        {
+            tasks[i].status = WAITING_STATUS;
+        }
+    }
+}
+
+void YAUS_ResumeTask(uint32_t handle)
+{
+    uint8_t i;
+
+    /* on cherche un slot de libre */
+    for (i = 0; i < YAUS_MAX_TASKS; i++)
+    {
+        if (tasks[i].idx == handle)
+        {
+            tasks[i].status = READY_STATUS;
+        }
+    }
+}
 
 void YAUS_TaskForce(uint32_t handle)
 {
@@ -46,9 +74,9 @@ void YAUS_TaskForce(uint32_t handle)
             //--- Execution des taches
             if (tasks[i].run != NULL)
             {
-                //tasks[i].status = RUNNING_STATUS;
+                // tasks[i].status = RUNNING_STATUS;
                 tasks[i].run();
-                //tasks[i].status = END_RUN_STATUS;
+                // tasks[i].status = END_RUN_STATUS;
             }
         }
     }
@@ -138,7 +166,6 @@ void YAUS_Init(void)
 #ifdef YAUS_USE_MODULE_CONSOLE
     CONS_Init();
 #endif
-
 }
 
 void YAUS_Update(void)
@@ -205,7 +232,9 @@ void YAUS_Run(bool blocking)
                 tick = YAUS_TickCount();
                 tasks[i].status = RUNNING_STATUS;
                 tasks[i].run();
-                tasks[i].status = END_RUN_STATUS;
+                if (tasks[i].status != WAITING_STATUS){
+                    tasks[i].status = END_RUN_STATUS;
+                }
 
                 tasks[i].taskUseTick += YAUS_TickNbCountSince(tick);
                 if (YAUS_TickNbCountSince(tick) < tasks[i].taskUseTickMin)
