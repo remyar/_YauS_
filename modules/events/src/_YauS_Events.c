@@ -96,14 +96,14 @@ void EVENT_Push(uint8_t TaskId, uint32_t type, void *pValue)
                 s_MEAS_PRESS_EVENT *v = (s_MEAS_PRESS_EVENT *)pValue;
                 sE.meas.autoZ = v->autoZ;
             }
-            /*
+            
             if (type == DISPLAY_EVENT)
             {
                 s_DISPLAY_EVENT *v = (s_DISPLAY_EVENT *)pValue;
                 sE.display.index = v->index;
                 sE.display.value = v->value;
             }
-            if (type == PLIP_EVENT)
+         /*   if (type == PLIP_EVENT)
             {
                 s_PLIP_EVENT *v = (s_PLIP_EVENT *)pValue;
                 sE.plip.code = v->code;
@@ -117,7 +117,7 @@ void EVENT_Push(uint8_t TaskId, uint32_t type, void *pValue)
             {
                 s_CANBUS_EVENT *v = (s_CANBUS_EVENT *)pValue;
                 sE.canBus.state = v->state;
-            }
+            }*/
             if (type == TOUCH_EVENT)
             {
                 s_TOUCH_EVENT *v = (s_TOUCH_EVENT *)pValue;
@@ -134,7 +134,7 @@ void EVENT_Push(uint8_t TaskId, uint32_t type, void *pValue)
             if (type == GET_VAL_EVENT)
             {
             }
-*/
+
             sEvent[i] = sE;
         }
     }

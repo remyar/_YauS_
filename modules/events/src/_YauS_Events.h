@@ -90,12 +90,12 @@ typedef struct //--- s_EVENT
     s_KEYB_EVENT key;
     s_LED_EVENT led;
     s_MEAS_PRESS_EVENT meas;
-    //s_DISPLAY_EVENT display;
+    s_DISPLAY_EVENT display;
     //s_PLIP_EVENT plip;
     //s_MCU_EVENT mcu;
     //s_CANBUS_EVENT canBus;
-    //s_TOUCH_EVENT touch;
-    //s_GET_TEXT_EVENT getText;
+    s_TOUCH_EVENT touch;
+    s_GET_TEXT_EVENT getText;
 } s_EVENT;
 
 #define NO_EVENT 0x0000
