@@ -35,4 +35,6 @@ bool ARCH_Uart2Available(void);
 uint8_t ARCH_Uart1Read(void);
 uint8_t ARCH_Uart2Read(void);
 
+uint32_t ARCH_Uart2GetBaudrate(void);
+
 #endif

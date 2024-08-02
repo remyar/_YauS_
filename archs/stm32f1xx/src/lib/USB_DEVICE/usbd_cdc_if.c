@@ -229,6 +229,7 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
     linecoding.format = pbuf[4];
     linecoding.paritytype = pbuf[5];
     linecoding.datatype = pbuf[6];
+
     break;
 
   case CDC_GET_LINE_CODING:
@@ -273,9 +274,9 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
  * @retval Result of the operation: USBD_OK if all operations are OK else USBD_FAIL
  */
 #ifndef USB_RX_BUFFER_SIZE
-#define USB_RX_BUFFER_SIZE  0
+#define USB_RX_BUFFER_SIZE 64
 #endif
-static uint8_t _usbRxBuffer[USB_RX_BUFFER_SIZE + 64];
+static uint8_t _usbRxBuffer[USB_RX_BUFFER_SIZE];
 static uint16_t _usbRxIdx = 0;
 static uint16_t _usbReadIdx = 0;
 
@@ -288,7 +289,7 @@ uint8_t ARCH_UsbRead(void)
 {
   uint8_t val8 = _usbRxBuffer[_usbReadIdx];
   _usbReadIdx++;
-  if (_usbReadIdx >= sizeof(_usbRxBuffer))
+  if (_usbReadIdx >= USB_RX_BUFFER_SIZE)
   {
     _usbReadIdx = 0;
   }
@@ -304,7 +305,7 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
   {
     _usbRxBuffer[_usbRxIdx] = Buf[i];
     _usbRxIdx++;
-    if (_usbRxIdx >= sizeof(_usbRxBuffer))
+    if (_usbRxIdx >= USB_RX_BUFFER_SIZE)
     {
       _usbRxIdx = 0;
     }
@@ -350,6 +351,11 @@ uint8_t ARCH_UsbSend(uint8_t *Buf, uint16_t Len)
     HardFault_Handler();
   }
   return CDC_Transmit_FS(Buf, Len);
+}
+
+uint32_t ARCH_UsbGetBaudrate(void)
+{
+  return linecoding.bitrate;
 }
 /* USER CODE BEGIN PRIVATE_FUNCTIONS_IMPLEMENTATION */
 

@@ -11,16 +11,16 @@ static bool useRs4852 = false;
 static bool useRs4853 = false;
 
 #ifndef SERIAL1_RX_BUFFER_SIZE
-#define SERIAL1_RX_BUFFER_SIZE 0
+#define SERIAL1_RX_BUFFER_SIZE 64
 #endif
-static uint8_t _Uart1RxBuffer[SERIAL1_RX_BUFFER_SIZE + 64];
+static uint8_t _Uart1RxBuffer[SERIAL1_RX_BUFFER_SIZE];
 static uint16_t _Uart1RxIdx = 0;
 static uint16_t _Uart1ReadIdx = 0;
 
 #ifndef SERIAL2_RX_BUFFER_SIZE
-#define SERIAL2_RX_BUFFER_SIZE 0
+#define SERIAL2_RX_BUFFER_SIZE 64
 #endif
-static uint8_t _Uart2RxBuffer[SERIAL2_RX_BUFFER_SIZE + 64];
+static uint8_t _Uart2RxBuffer[SERIAL2_RX_BUFFER_SIZE];
 static uint16_t _Uart2RxIdx = 0;
 static uint16_t _Uart2ReadIdx = 0;
 
@@ -112,7 +112,7 @@ void ARCH_UartInit(USART_TypeDef *uartNum, unsigned long baud, uint32_t flags)
             HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
         }
 
-        _Uart2RxIdx = 0;
+        //_Uart2RxIdx = 0;
         huart = &huart2;
     }
     else if (uartNum == USART3)
@@ -155,6 +155,7 @@ void ARCH_UartInit(USART_TypeDef *uartNum, unsigned long baud, uint32_t flags)
         huart->Init.HwFlowCtl = UART_HWCONTROL_NONE;
         huart->Init.OverSampling = UART_OVERSAMPLING_16;
 
+        HAL_UART_DeInit(huart);
         if (HAL_UART_Init(huart) != HAL_OK)
         {
             Error_Handler();
@@ -316,7 +317,7 @@ uint8_t ARCH_Uart2Read(void)
 {
     uint8_t val8 = _Uart2RxBuffer[_Uart2ReadIdx];
     _Uart2ReadIdx++;
-    if (_Uart2ReadIdx >= sizeof(_Uart2RxBuffer))
+    if (_Uart2ReadIdx >= SERIAL2_RX_BUFFER_SIZE)
     {
         _Uart2ReadIdx = 0;
     }
@@ -340,7 +341,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     {
         _Uart2RxBuffer[_Uart2RxIdx] = dataHuart2;
         _Uart2RxIdx++;
-        if (_Uart2RxIdx >= sizeof(_Uart2RxBuffer))
+        if (_Uart2RxIdx >= SERIAL2_RX_BUFFER_SIZE)
         {
             _Uart2RxIdx = 0;
         }
@@ -350,4 +351,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     {
         HAL_UART_Receive_IT(huart, &dataHuart3, 1);
     }
+}
+
+uint32_t ARCH_Uart2GetBaudrate(void){
+    return huart2.Init.BaudRate;
 }
