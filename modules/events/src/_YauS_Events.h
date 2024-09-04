@@ -60,7 +60,7 @@ typedef struct //--- s_DISPLAY_EVENT
 
 typedef struct //--- s_COMPC_EVENT
 {
-    //uint8_t state;
+    // uint8_t state;
     uint8_t length;
     uint8_t buff[128];
 } s_COMPC_EVENT;
@@ -83,6 +83,11 @@ typedef struct //--- s_DISPLAY_EVENT
     char text[16];
 } s_GET_TEXT_EVENT;
 
+typedef struct
+{
+    bool autoZ;
+} s_MEAS_PRESS_EVENT;
+
 typedef struct //--- s_EVENT
 {
     uint32_t type;
@@ -91,9 +96,9 @@ typedef struct //--- s_EVENT
     s_LED_EVENT led;
     s_MEAS_PRESS_EVENT meas;
     s_DISPLAY_EVENT display;
-    //s_PLIP_EVENT plip;
-    //s_MCU_EVENT mcu;
-    //s_CANBUS_EVENT canBus;
+    // s_PLIP_EVENT plip;
+    // s_MCU_EVENT mcu;
+    // s_CANBUS_EVENT canBus;
     s_TOUCH_EVENT touch;
     s_GET_TEXT_EVENT getText;
 } s_EVENT;
