@@ -63,5 +63,6 @@
 
 void pinMode(uint16_t pinNum, uint8_t state);
 void digitalWrite(uint16_t pinNum, uint8_t state);
+bool digitalRead(uint16_t pinNum);
 
 #endif

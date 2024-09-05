@@ -286,6 +286,12 @@ inline void pinMode(uint16_t pinNum, uint8_t state)
     }
 }
 
-inline void digitalWrite(uint16_t pinNum , uint8_t state){
+inline void digitalWrite(uint16_t pinNum, uint8_t state)
+{
     HAL_GPIO_WriteFastPin(_pinToPort(pinNum), _pinToPin(pinNum), state == LOW ? GPIO_PIN_RESET : GPIO_PIN_SET);
+}
+
+inline bool digitalRead(uint16_t pinNum)
+{
+    return HAL_GPIO_ReadPin(_pinToPort(pinNum), _pinToPin(pinNum));
 }
