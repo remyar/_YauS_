@@ -83,11 +83,6 @@ typedef struct //--- s_DISPLAY_EVENT
     char text[16];
 } s_GET_TEXT_EVENT;
 
-typedef struct
-{
-    bool autoZ;
-} s_MEAS_PRESS_EVENT;
-
 typedef struct //--- s_EVENT
 {
     uint32_t type;
