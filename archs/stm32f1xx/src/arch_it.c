@@ -188,7 +188,15 @@ void ADC1_2_IRQHandler(void)
  */
 void USB_LP_CAN1_RX0_IRQHandler(void)
 {
-    HAL_PCD_IRQHandler(&hpcd_USB_FS);
+    if (ARCH_UseUsb())
+    {
+        HAL_PCD_IRQHandler(&hpcd_USB_FS);
+    }
+
+    if (ARCH_UseCan())
+    {
+        _HAL_CAN_IRQHandler();
+    }
 }
 
 /**
