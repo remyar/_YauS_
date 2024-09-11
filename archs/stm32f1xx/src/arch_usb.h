@@ -9,4 +9,5 @@ uint8_t ARCH_UsbRead(void);
 bool ARCH_UsbAvailable(void);
 uint8_t ARCH_UsbSend(uint8_t *Buf, uint16_t Len);
 uint32_t ARCH_UsbGetBaudrate(void);
+bool ARCH_UseUsb(void);
 #endif
