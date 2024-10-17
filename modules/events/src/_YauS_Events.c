@@ -96,28 +96,28 @@ void EVENT_Push(uint8_t TaskId, uint32_t type, void *pValue)
                 s_MEAS_PRESS_EVENT *v = (s_MEAS_PRESS_EVENT *)pValue;
                 sE.meas.autoZ = v->autoZ;
             }
-            
+
             if (type == DISPLAY_EVENT)
             {
                 s_DISPLAY_EVENT *v = (s_DISPLAY_EVENT *)pValue;
                 sE.display.index = v->index;
                 sE.display.value = v->value;
             }
-         /*   if (type == PLIP_EVENT)
-            {
-                s_PLIP_EVENT *v = (s_PLIP_EVENT *)pValue;
-                sE.plip.code = v->code;
-            }
-            if (type == MCU_EVENT)
-            {
-                s_MCU_EVENT *v = (s_MCU_EVENT *)pValue;
-                sE.mcu.state = v->state;
-            }
-            if (type == CANBUS_EVENT)
-            {
-                s_CANBUS_EVENT *v = (s_CANBUS_EVENT *)pValue;
-                sE.canBus.state = v->state;
-            }*/
+            /*   if (type == PLIP_EVENT)
+               {
+                   s_PLIP_EVENT *v = (s_PLIP_EVENT *)pValue;
+                   sE.plip.code = v->code;
+               }
+               if (type == MCU_EVENT)
+               {
+                   s_MCU_EVENT *v = (s_MCU_EVENT *)pValue;
+                   sE.mcu.state = v->state;
+               }
+               if (type == CANBUS_EVENT)
+               {
+                   s_CANBUS_EVENT *v = (s_CANBUS_EVENT *)pValue;
+                   sE.canBus.state = v->state;
+               }*/
             if (type == TOUCH_EVENT)
             {
                 s_TOUCH_EVENT *v = (s_TOUCH_EVENT *)pValue;
@@ -133,6 +133,20 @@ void EVENT_Push(uint8_t TaskId, uint32_t type, void *pValue)
             }
             if (type == GET_VAL_EVENT)
             {
+            }
+            if (type == CAMP_EVENT)
+            {
+                s_CAMP_EVENT *v = (s_CAMP_EVENT *)pValue;
+                sE.camp.state = v->state;
+            }
+            if (type == SELECT_RACK_EVENT)
+            {
+                s_RACK_NUMBER_EVENT *v = (s_RACK_NUMBER_EVENT *)pValue;
+                sE.rack.number = v->number;
+                for (uint8_t i = 0; i < 12; i++)
+                {
+                    sE.rack.flow[i] = v->flow[i];
+                }
             }
 
             sEvent[i] = sE;

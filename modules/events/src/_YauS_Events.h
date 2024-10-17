@@ -83,6 +83,17 @@ typedef struct //--- s_DISPLAY_EVENT
     char text[16];
 } s_GET_TEXT_EVENT;
 
+typedef struct //--- s_CAMP_EVENT
+{
+    uint16_t state;
+} s_CAMP_EVENT;
+
+typedef struct
+{
+    uint8_t number;
+    float flow[12];
+} s_RACK_NUMBER_EVENT;
+
 typedef struct //--- s_EVENT
 {
     uint32_t type;
@@ -96,6 +107,8 @@ typedef struct //--- s_EVENT
     // s_CANBUS_EVENT canBus;
     s_TOUCH_EVENT touch;
     s_GET_TEXT_EVENT getText;
+    s_CAMP_EVENT camp;
+    s_RACK_NUMBER_EVENT rack;
 } s_EVENT;
 
 #define NO_EVENT 0x0000
@@ -113,6 +126,7 @@ typedef struct //--- s_EVENT
 #define MEAS_EVENT (uint32_t)(1 << 12)
 #define CAMP_EVENT (uint32_t)(1 << 13)
 #define MEAS_PRESS_EVENT (uint32_t)(1 << 14)
+#define SELECT_RACK_EVENT (uint32_t)(1 << 15)
 
 //-----------------------------------------------------------------------------
 // Fonctions publiques
