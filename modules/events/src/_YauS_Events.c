@@ -148,6 +148,11 @@ void EVENT_Push(uint8_t TaskId, uint32_t type, void *pValue)
                     sE.rack.flow[i] = v->flow[i];
                 }
             }
+            if (type == DEVICE_EVENT)
+            {
+                s_DEVICE_EVENT *v = (s_DEVICE_EVENT *)pValue;
+                sE.device.state = v->state;
+            }
 
             sEvent[i] = sE;
         }

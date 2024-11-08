@@ -94,6 +94,11 @@ typedef struct
     float flow[12];
 } s_RACK_NUMBER_EVENT;
 
+typedef struct 
+{
+    uint16_t state;
+} s_DEVICE_EVENT;
+
 typedef struct //--- s_EVENT
 {
     uint32_t type;
@@ -109,6 +114,7 @@ typedef struct //--- s_EVENT
     s_GET_TEXT_EVENT getText;
     s_CAMP_EVENT camp;
     s_RACK_NUMBER_EVENT rack;
+    s_DEVICE_EVENT device;
 } s_EVENT;
 
 #define NO_EVENT 0x0000
@@ -127,6 +133,7 @@ typedef struct //--- s_EVENT
 #define CAMP_EVENT (uint32_t)(1 << 13)
 #define MEAS_PRESS_EVENT (uint32_t)(1 << 14)
 #define SELECT_RACK_EVENT (uint32_t)(1 << 15)
+#define DEVICE_EVENT (uint32_t) (1 << 16)
 
 //-----------------------------------------------------------------------------
 // Fonctions publiques
