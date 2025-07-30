@@ -19,6 +19,11 @@
 #ifndef _YAUS__H_INCLUDED
 #define _YAUS__H_INCLUDED
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 /** INCLUDES *******************************************************/
 #include "./_YauS_Type.h"
 #include "../_YauS_Config.h"
@@ -56,5 +61,9 @@ void YAUS_Run(bool blocking);
 void YAUS_TaskForce(uint32_t handle);
 void YAUS_PauseTask(uint32_t handle);
 void YAUS_ResumeTask(uint32_t handle);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _YAUS__H_INCLUDED */
