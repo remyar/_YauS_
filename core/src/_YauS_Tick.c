@@ -37,12 +37,18 @@
 
 void YAUS_TickInit(void)
 {
+#ifdef YAUS_USE_ARCH
 	ARCH_TickInit();
+#endif
 }
 
 uint32_t YAUS_TickCount(void)
 {
+#ifdef YAUS_USE_ARCH
 	return ARCH_GetTick();
+#else
+	return millis();
+#endif
 }
 
 uint32_t YAUS_TickNbCountSince(uint32_t lastCount)
